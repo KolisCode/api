@@ -113,6 +113,21 @@ public/          landing + playground (index.html autocontenido, servido en /)
 
 ---
 
+## Tests y CI
+
+Tests **e2e** con Jest + supertest sobre la app real (requiere Postgres en marcha):
+
+```bash
+npm run db:up           # Postgres en Docker (puerto 5434)
+npm run prisma:migrate  # aplica migraciones
+npm run test:e2e        # 20 tests: keys, links+redirect, toolbox, conversiones
+```
+
+Cada push y PR dispara **GitHub Actions** (`.github/workflows/ci.yml`), que en un
+entorno limpio levanta un PostgreSQL, instala, hace **lint → build → migraciones → e2e**.
+
+---
+
 ## Deploy
 
 Build de producción:
@@ -134,4 +149,4 @@ También incluye `Dockerfile` multi-stage para contenedor.
 - [x] Toolbox: **mock data** (seed/locale), **UUID**, **slugify**, **validación de tarjetas**
 - [x] Toolbox+: **conversiones** (monedas/unidades) y **generador de contraseñas**
 - [x] **Landing + playground** en `/` (key temporal, demo en vivo de todo el toolbox)
-- [ ] Tests e2e y CI
+- [x] **Tests e2e** (Jest + supertest) y **CI** (GitHub Actions: lint · build · e2e con Postgres)

@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { join } from 'node:path';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -11,7 +10,7 @@ import type {
 } from 'express';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
-import { ProblemDetailsFilter } from './common/filters/problem-details.filter';
+import { configureApp } from './app-config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -24,16 +23,9 @@ async function bootstrap() {
   app.set('trust proxy', 1);
 
   app.enableCors();
-  app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-  app.useGlobalFilters(new ProblemDetailsFilter());
+  // Versionado, validación y formato de errores (compartido con los tests e2e).
+  configureApp(app);
 
   // Landing + playground autocontenido servido en `/` (no pasa por los guards de Nest).
   app.useStaticAssets(join(__dirname, '..', 'public'));

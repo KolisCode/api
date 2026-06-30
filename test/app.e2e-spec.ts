@@ -1,29 +1,30 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { createTestApp, TestContext } from './utils';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('App (e2e)', () => {
+  let ctx: TestContext;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+  beforeAll(async () => {
+    ctx = await createTestApp();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(async () => {
+    await ctx.app.close();
   });
 
-  afterEach(async () => {
-    await app.close();
+  it('GET /health responde estado ok', async () => {
+    const res = await request(ctx.http()).get('/health').expect(200);
+    expect(res.body.status).toBe('ok');
+    expect(typeof res.body.uptime).toBe('number');
+  });
+
+  it('una ruta inexistente devuelve RFC 7807 (application/problem+json)', async () => {
+    const res = await request(ctx.http()).get('/v1/no-existe').expect(404);
+    expect(res.headers['content-type']).toContain('application/problem+json');
+    expect(res.body).toMatchObject({
+      type: 'about:blank',
+      status: 404,
+      instance: '/v1/no-existe',
+    });
   });
 });

@@ -18,11 +18,12 @@ import { HealthModule } from './modules/health/health.module';
     ConfigModule.forRoot({ isGlobal: true }),
     LoggerModule.forRoot({
       pinoHttp: {
+        level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
         transport:
-          process.env.NODE_ENV !== 'production'
+          process.env.NODE_ENV === 'development'
             ? { target: 'pino-pretty', options: { singleLine: true } }
             : undefined,
-        autoLogging: true,
+        autoLogging: process.env.NODE_ENV !== 'test',
         redact: ['req.headers.authorization', 'req.headers["x-api-key"]'],
       },
     }),
