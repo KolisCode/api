@@ -14,7 +14,8 @@ datos de prueba, validadores y más.
 - 🔗 **Enlaces cortos** con código personalizado o autogenerado y expiración opcional.
 - 📊 **Analytics de clics**: total, desglose por dispositivo / navegador / país, top referrers y timeline diaria (IP anonimizada con HMAC).
 - 🔳 **Generador de QR** (PNG/SVG, tamaño y colores configurables), con QR directo de cada enlace.
-- 🧰 **Toolbox**: datos fake reproducibles (seed/locale), UUID v4, slugify y validación de tarjetas (Luhn + marca).
+- 🧰 **Toolbox**: datos fake reproducibles (seed/locale), UUID v4, slugify, validación de tarjetas (Luhn + marca) y generador de contraseñas (crypto + entropía).
+- 🔄 **Conversiones**: unidades (longitud, masa, volumen, área, velocidad, tiempo, datos, temperatura) y monedas con tasas en vivo (~160 divisas, cacheadas).
 - 📖 **Docs interactivas** en `/reference` (Scalar) + spec en `/openapi.json`.
 - ⚠️ **Errores consistentes** con [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) (`application/problem+json`).
 - 🧱 Versionado por URI (`/v1`), validación estricta, logs estructurados (pino), health check.
@@ -77,6 +78,9 @@ curl http://localhost:3000/v1/links/nest/stats \
 | `GET`  | `/v1/mock/users` | ✅ | Usuarios fake (count, seed, locale) |
 | `GET`  | `/v1/tools/uuid` | ✅ | Generar UUID v4 |
 | `POST` | `/v1/tools/slugify` | ✅ | Texto → slug URL-safe |
+| `GET`  | `/v1/tools/password` | ✅ | Generar contraseñas seguras (entropía + fuerza) |
+| `GET`  | `/v1/convert/units` | ✅ | Convertir unidades (8 categorías) |
+| `GET`  | `/v1/convert/currency` | ✅ | Convertir monedas (tasas en vivo) |
 | `POST` | `/v1/validate/credit-card` | ✅ | Validar tarjeta (Luhn) + marca |
 | `GET`  | `/r/:code` | — | Redirect público (registra clic) |
 | `GET`  | `/health` | — | Estado del servicio |
@@ -96,6 +100,9 @@ src/
   modules/
     keys/        crear / consultar API keys
     links/       enlaces, redirect y analytics
+    qr/          generación de QR (PNG/SVG)
+    tools/       mock data, uuid, slugify, tarjetas, contraseñas
+    convert/     conversiones de unidades y monedas
     health/      health check
   prisma/        servicio Prisma (adapter pg) + módulo global
   generated/     cliente Prisma (no se versiona)
@@ -122,6 +129,6 @@ También incluye `Dockerfile` multi-stage para contenedor.
 
 - [x] Módulo **QR** (`POST /v1/qr`) integrado con Links
 - [x] Toolbox: **mock data** (seed/locale), **UUID**, **slugify**, **validación de tarjetas**
-- [ ] Toolbox+: conversiones (monedas/unidades), generador de contraseñas
+- [x] Toolbox+: **conversiones** (monedas/unidades) y **generador de contraseñas**
 - [ ] Landing + playground (key temporal, demo en vivo)
 - [ ] Tests e2e y CI

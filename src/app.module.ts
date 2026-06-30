@@ -10,6 +10,7 @@ import { KeysModule } from './modules/keys/keys.module';
 import { LinksModule } from './modules/links/links.module';
 import { QrModule } from './modules/qr/qr.module';
 import { ToolsModule } from './modules/tools/tools.module';
+import { ConvertModule } from './modules/convert/convert.module';
 import { HealthModule } from './modules/health/health.module';
 
 @Module({
@@ -31,6 +32,7 @@ import { HealthModule } from './modules/health/health.module';
     LinksModule,
     QrModule,
     ToolsModule,
+    ConvertModule,
     HealthModule,
   ],
   providers: [

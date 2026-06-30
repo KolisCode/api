@@ -1,10 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { randomInt, randomUUID } from 'node:crypto';
 import { Faker, en, es } from '@faker-js/faker';
 
 export type SupportedLocale = 'en' | 'es';
 
-const LOCALES: Record<SupportedLocale, ConstructorParameters<typeof Faker>[0]['locale']> = {
+const CHARSET = {
+  lowercase: 'abcdefghijklmnopqrstuvwxyz',
+  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*()-_=+[]{};:,.?',
+} as const;
+
+/** Caracteres fáciles de confundir entre sí: i, l, 1, L, o, 0, O. */
+const SIMILAR = /[il1LoO0]/g;
+
+export interface PasswordOptions {
+  length: number;
+  count: number;
+  uppercase: boolean;
+  lowercase: boolean;
+  numbers: boolean;
+  symbols: boolean;
+  excludeSimilar: boolean;
+}
+
+export type PasswordStrength = 'weak' | 'fair' | 'strong' | 'very-strong';
+
+const LOCALES: Record<
+  SupportedLocale,
+  ConstructorParameters<typeof Faker>[0]['locale']
+> = {
   en: [en],
   es: [es, en],
 };
@@ -39,7 +64,9 @@ export class ToolsService {
         firstName,
         lastName,
         fullName: `${firstName} ${lastName}`,
-        username: faker.internet.username({ firstName, lastName }).toLowerCase(),
+        username: faker.internet
+          .username({ firstName, lastName })
+          .toLowerCase(),
         email: faker.internet.email({ firstName, lastName }).toLowerCase(),
         avatar: faker.image.avatarGitHub(),
         phone: faker.phone.number(),
@@ -54,6 +81,70 @@ export class ToolsService {
   /** Genera N UUID v4. */
   uuids(count: number): string[] {
     return Array.from({ length: count }, () => randomUUID());
+  }
+
+  /**
+   * Genera contraseñas criptográficamente aleatorias (crypto.randomInt, sin sesgo).
+   * Garantiza al menos un carácter de cada conjunto seleccionado y mezcla el
+   * resultado con Fisher-Yates. Devuelve también la entropía estimada en bits.
+   */
+  generatePassword(opts: PasswordOptions) {
+    const pools: string[] = [];
+    if (opts.lowercase) pools.push(CHARSET.lowercase);
+    if (opts.uppercase) pools.push(CHARSET.uppercase);
+    if (opts.numbers) pools.push(CHARSET.numbers);
+    if (opts.symbols) pools.push(CHARSET.symbols);
+
+    const filtered = pools
+      .map((set) => (opts.excludeSimilar ? set.replace(SIMILAR, '') : set))
+      .filter((set) => set.length > 0);
+
+    if (filtered.length === 0) {
+      throw new BadRequestException(
+        'Selecciona al menos un conjunto de caracteres.',
+      );
+    }
+    if (opts.length < filtered.length) {
+      throw new BadRequestException(
+        `La longitud (${opts.length}) es menor que el número de conjuntos seleccionados (${filtered.length}).`,
+      );
+    }
+
+    const all = filtered.join('');
+    const passwords = Array.from({ length: opts.count }, () =>
+      this.buildPassword(opts.length, filtered, all),
+    );
+    const entropyBits = Number(
+      (opts.length * Math.log2(all.length)).toFixed(2),
+    );
+
+    return {
+      passwords,
+      length: opts.length,
+      poolSize: all.length,
+      entropyBits,
+      strength: this.classifyStrength(entropyBits),
+    };
+  }
+
+  private buildPassword(length: number, pools: string[], all: string): string {
+    const chars: string[] = [];
+    // Garantiza al menos un carácter de cada conjunto seleccionado.
+    for (const pool of pools) chars.push(pool[randomInt(pool.length)]);
+    while (chars.length < length) chars.push(all[randomInt(all.length)]);
+    // Fisher-Yates para que los caracteres garantizados no queden al inicio.
+    for (let i = chars.length - 1; i > 0; i--) {
+      const j = randomInt(i + 1);
+      [chars[i], chars[j]] = [chars[j], chars[i]];
+    }
+    return chars.join('');
+  }
+
+  private classifyStrength(entropyBits: number): PasswordStrength {
+    if (entropyBits < 40) return 'weak';
+    if (entropyBits < 60) return 'fair';
+    if (entropyBits < 80) return 'strong';
+    return 'very-strong';
   }
 
   /** Convierte un texto a slug URL-safe. */
