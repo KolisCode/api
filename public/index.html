@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KolisKit API · Toolbox para devs</title>
+    <meta
+      name="description"
+      content="API de utilidades para desarrolladores: enlaces cortos con analytics, QR, contraseñas, conversiones y más. Pruébala en vivo."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { brand: { DEFAULT: '#6366f1', dark: '#4f46e5' } },
+            fontFamily: { mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
+          },
+        },
+      };
+    </script>
+    <style>
+      body { background: radial-gradient(1200px 600px at 80% -10%, #1e1b4b 0%, #020617 55%); }
+      pre { white-space: pre-wrap; word-break: break-word; }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-200 font-sans">
+    <!-- ===== NAV ===== -->
+    <header class="sticky top-0 z-20 backdrop-blur border-b border-white/10 bg-slate-950/60">
+      <div class="max-w-6xl mx-auto px-5 py-3 flex items-center gap-3">
+        <span class="text-xl font-bold tracking-tight">🧰 KolisKit<span class="text-brand">API</span></span>
+        <nav class="ml-auto flex items-center gap-2 text-sm">
+          <a href="/reference" class="px-3 py-1.5 rounded-lg hover:bg-white/10">Docs</a>
+          <a href="/openapi.json" class="px-3 py-1.5 rounded-lg hover:bg-white/10">OpenAPI</a>
+          <a href="https://github.com/KolisCode/api" target="_blank" rel="noopener"
+            class="px-3 py-1.5 rounded-lg hover:bg-white/10">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="max-w-6xl mx-auto px-5 pt-16 pb-10 text-center">
+      <p class="inline-block mb-4 px-3 py-1 rounded-full text-xs font-medium bg-brand/15 text-indigo-300 border border-brand/30">
+        NestJS · Prisma · PostgreSQL · OpenAPI
+      </p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Una API, todo el <span class="text-brand">toolbox</span>.
+      </h1>
+      <p class="mt-4 max-w-2xl mx-auto text-slate-400">
+        Enlaces cortos con analytics, QR, contraseñas seguras, conversiones de unidades y monedas,
+        datos de prueba y más — con API keys, rate limiting por plan y errores RFC 7807.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <a href="#playground" class="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark font-semibold text-white shadow-lg shadow-brand/30">
+          Probar en vivo ↓
+        </a>
+        <a href="/reference" class="px-5 py-2.5 rounded-xl border border-white/15 hover:bg-white/10 font-semibold">
+          Ver documentación
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== KEY BAR ===== -->
+    <section id="playground" class="max-w-6xl mx-auto px-5 scroll-mt-20">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <div class="flex flex-wrap items-end gap-3">
+          <div class="flex-1 min-w-[200px]">
+            <label class="block text-xs text-slate-400 mb-1">1 · Genera tu API key (plan FREE)</label>
+            <input id="keyName" value="playground" placeholder="nombre de la app"
+              class="w-full rounded-lg bg-slate-900 border border-white/10 px-3 py-2 text-sm outline-none focus:border-brand" />
+          </div>
+          <button id="genKey" class="px-4 py-2 rounded-lg bg-brand hover:bg-brand-dark font-semibold text-white text-sm">
+            Generar key
+          </button>
+          <div id="keyStatus" class="text-sm text-slate-400">Sin key — el playground está bloqueado.</div>
+        </div>
+        <div id="keyBox" class="hidden mt-3 font-mono text-xs bg-slate-950 rounded-lg p-3 border border-emerald-500/30 text-emerald-300 break-all"></div>
+      </div>
+    </section>
+
+    <!-- ===== CARDS ===== -->
+    <main class="max-w-6xl mx-auto px-5 py-8">
+      <fieldset id="pg" disabled class="opacity-50 transition-opacity grid md:grid-cols-2 gap-5">
+
+        <!-- Enlaces cortos -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🔗 Enlace corto + analytics</h3>
+          <p class="text-xs text-slate-400 mb-3">El módulo estrella. Crea un enlace y consulta sus clics.</p>
+          <input id="lnUrl" value="https://nestjs.com/" placeholder="https://destino.com"
+            class="inp mb-2" />
+          <input id="lnCode" placeholder="código opcional (ej. nest)" class="inp mb-2" />
+          <div class="flex gap-2">
+            <button data-act="link-create" class="btn">Crear enlace</button>
+            <button data-act="link-stats" class="btn-ghost">Ver stats</button>
+          </div>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- QR -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🔳 Generador de QR</h3>
+          <p class="text-xs text-slate-400 mb-3">PNG o SVG de cualquier texto o URL.</p>
+          <input id="qrData" value="https://koliskit.dev" placeholder="texto o URL" class="inp mb-2" />
+          <div class="flex gap-2 items-center">
+            <select id="qrFormat" class="inp w-28"><option>png</option><option>svg</option></select>
+            <button data-act="qr" class="btn">Generar QR</button>
+          </div>
+          <div data-out class="out flex items-center justify-center min-h-[80px]"></div>
+        </article>
+
+        <!-- Password -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🔐 Contraseñas seguras</h3>
+          <p class="text-xs text-slate-400 mb-3">crypto.randomInt · entropía y fuerza calculadas.</p>
+          <div class="flex flex-wrap gap-3 items-center text-sm mb-2">
+            <label>Longitud <input id="pwLen" type="number" value="16" min="8" max="128" class="inp w-20 inline-block" /></label>
+            <label>Cantidad <input id="pwCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
+          </div>
+          <div class="flex flex-wrap gap-3 text-xs mb-3">
+            <label><input type="checkbox" id="pwUpper" checked /> A-Z</label>
+            <label><input type="checkbox" id="pwLower" checked /> a-z</label>
+            <label><input type="checkbox" id="pwNum" checked /> 0-9</label>
+            <label><input type="checkbox" id="pwSym" checked /> !@#</label>
+            <label><input type="checkbox" id="pwExcl" /> sin confundibles</label>
+          </div>
+          <button data-act="password" class="btn">Generar</button>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- Convert units -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">📏 Conversión de unidades</h3>
+          <p class="text-xs text-slate-400 mb-3">Longitud, masa, volumen, área, velocidad, tiempo, datos, temperatura.</p>
+          <div class="flex gap-2 mb-2">
+            <input id="unVal" type="number" value="100" class="inp w-24" />
+            <input id="unFrom" value="km" placeholder="de" class="inp w-24" />
+            <span class="self-center text-slate-500">→</span>
+            <input id="unTo" value="mi" placeholder="a" class="inp w-24" />
+          </div>
+          <button data-act="units" class="btn">Convertir</button>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- Convert currency -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">💱 Conversión de monedas</h3>
+          <p class="text-xs text-slate-400 mb-3">Tasas en vivo (~160 divisas, cacheadas).</p>
+          <div class="flex gap-2 mb-2">
+            <input id="cuAmt" type="number" value="100" class="inp w-24" />
+            <input id="cuFrom" value="USD" maxlength="3" class="inp w-20 uppercase" />
+            <span class="self-center text-slate-500">→</span>
+            <input id="cuTo" value="EUR" maxlength="3" class="inp w-20 uppercase" />
+          </div>
+          <button data-act="currency" class="btn">Convertir</button>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- Mock users -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">👤 Datos de prueba</h3>
+          <p class="text-xs text-slate-400 mb-3">Usuarios fake realistas (faker), reproducibles con seed.</p>
+          <div class="flex gap-2 mb-2 items-center text-sm">
+            <label>N° <input id="mkCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
+            <select id="mkLocale" class="inp w-24"><option value="es">es</option><option value="en">en</option></select>
+          </div>
+          <button data-act="mock" class="btn">Generar</button>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- UUID + Slugify -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🆔 UUID y slugify</h3>
+          <p class="text-xs text-slate-400 mb-3">UUID v4 y conversión de texto a slug URL-safe.</p>
+          <div class="flex gap-2 mb-2">
+            <input id="uuidN" type="number" value="3" min="1" max="100" class="inp w-24" />
+            <button data-act="uuid" class="btn">UUIDs</button>
+          </div>
+          <div class="flex gap-2">
+            <input id="slugText" value="¡Hola Mundo del Ñandú!" class="inp" />
+            <button data-act="slug" class="btn">Slug</button>
+          </div>
+          <pre data-out class="out"></pre>
+        </article>
+
+        <!-- Credit card -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">💳 Validar tarjeta</h3>
+          <p class="text-xs text-slate-400 mb-3">Algoritmo de Luhn + detección de marca.</p>
+          <input id="ccNum" value="4242 4242 4242 4242" class="inp mb-2" />
+          <button data-act="card" class="btn">Validar</button>
+          <pre data-out class="out"></pre>
+        </article>
+
+      </fieldset>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-5 py-10 text-center text-xs text-slate-500 border-t border-white/10">
+      KolisKit API — toolbox de portafolio. Hecho con NestJS, Prisma y PostgreSQL ·
+      <a href="/reference" class="text-indigo-400 hover:underline">Documentación</a>
+    </footer>
+
+    <!-- Estilos utilitarios compartidos -->
+    <style>
+      .inp { display:block; width:100%; border-radius:.5rem; background:#0f172a; border:1px solid rgba(255,255,255,.1); padding:.5rem .75rem; font-size:.875rem; color:#e2e8f0; outline:none; }
+      .inp:focus { border-color:#6366f1; }
+      .btn { padding:.5rem 1rem; border-radius:.5rem; background:#6366f1; font-weight:600; font-size:.875rem; color:#fff; }
+      .btn:hover { background:#4f46e5; }
+      .btn-ghost { padding:.5rem 1rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.15); font-weight:600; font-size:.875rem; }
+      .btn-ghost:hover { background:rgba(255,255,255,.1); }
+      .out { margin-top:.75rem; font-family:ui-monospace,monospace; font-size:.75rem; color:#cbd5e1; background:#020617; border:1px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.75rem; max-height:240px; overflow:auto; }
+      .out:empty { display:none; }
+    </style>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const state = { key: localStorage.getItem('kk_key') || '' };
+
+      // ---- HTTP helper (RFC 7807 aware) ----
+      async function api(method, path, { body, raw } = {}) {
+        const headers = {};
+        if (state.key) headers['Authorization'] = 'Bearer ' + state.key;
+        if (body) headers['Content-Type'] = 'application/json';
+        const res = await fetch(path, {
+          method,
+          headers,
+          body: body ? JSON.stringify(body) : undefined,
+        });
+        if (raw) {
+          if (!res.ok) throw new Error((await safeJson(res))?.detail || res.statusText);
+          return res;
+        }
+        const data = await safeJson(res);
+        if (!res.ok) throw new Error(data?.detail || data?.message || res.statusText);
+        return data;
+      }
+      const safeJson = async (res) => { try { return await res.json(); } catch { return null; } };
+
+      function out(el, data, isError = false) {
+        el.style.color = isError ? '#fb7185' : '#cbd5e1';
+        el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      }
+
+      // ---- key management ----
+      function applyKey(masked) {
+        $('pg').disabled = !state.key;
+        $('pg').classList.toggle('opacity-50', !state.key);
+        if (state.key) {
+          $('keyStatus').innerHTML = '<span class="text-emerald-400">● key activa</span>';
+        }
+      }
+      if (state.key) {
+        $('keyBox').classList.remove('hidden');
+        $('keyBox').textContent = state.key;
+        applyKey();
+      }
+
+      $('genKey').addEventListener('click', async () => {
+        $('genKey').disabled = true;
+        try {
+          const r = await api('POST', '/v1/keys', { body: { name: $('keyName').value || 'playground' } });
+          state.key = r.key;
+          localStorage.setItem('kk_key', r.key);
+          $('keyBox').classList.remove('hidden');
+          $('keyBox').textContent = r.key + '  —  ' + r.warning;
+          applyKey();
+        } catch (e) {
+          $('keyBox').classList.remove('hidden');
+          out($('keyBox'), e.message, true);
+        } finally {
+          $('genKey').disabled = false;
+        }
+      });
+
+      // ---- card actions ----
+      const lastCode = { value: '' };
+      const actions = {
+        'link-create': async (o) => {
+          const body = { targetUrl: $('lnUrl').value };
+          if ($('lnCode').value.trim()) body.code = $('lnCode').value.trim();
+          const r = await api('POST', '/v1/links', { body });
+          lastCode.value = r.code;
+          out(o, r);
+        },
+        'link-stats': async (o) => {
+          const code = $('lnCode').value.trim() || lastCode.value;
+          if (!code) throw new Error('Crea un enlace primero o escribe un código.');
+          out(o, await api('GET', `/v1/links/${code}/stats`));
+        },
+        qr: async (o) => {
+          const res = await api('POST', '/v1/qr', {
+            raw: true,
+            body: { data: $('qrData').value, format: $('qrFormat').value },
+          });
+          const url = URL.createObjectURL(await res.blob());
+          o.innerHTML = `<img src="${url}" alt="QR" class="max-h-48 rounded bg-white p-2" />`;
+        },
+        password: async (o) => {
+          const q = new URLSearchParams({
+            length: $('pwLen').value,
+            count: $('pwCount').value,
+            uppercase: $('pwUpper').checked,
+            lowercase: $('pwLower').checked,
+            numbers: $('pwNum').checked,
+            symbols: $('pwSym').checked,
+            excludeSimilar: $('pwExcl').checked,
+          });
+          out(o, await api('GET', '/v1/tools/password?' + q));
+        },
+        units: async (o) => {
+          const q = new URLSearchParams({ value: $('unVal').value, from: $('unFrom').value, to: $('unTo').value });
+          out(o, await api('GET', '/v1/convert/units?' + q));
+        },
+        currency: async (o) => {
+          const q = new URLSearchParams({ amount: $('cuAmt').value, from: $('cuFrom').value, to: $('cuTo').value });
+          out(o, await api('GET', '/v1/convert/currency?' + q));
+        },
+        mock: async (o) => {
+          const q = new URLSearchParams({ count: $('mkCount').value, locale: $('mkLocale').value });
+          out(o, await api('GET', '/v1/mock/users?' + q));
+        },
+        uuid: async (o) => {
+          out(o, await api('GET', '/v1/tools/uuid?count=' + $('uuidN').value));
+        },
+        slug: async (o) => {
+          out(o, await api('POST', '/v1/tools/slugify', { body: { text: $('slugText').value } }));
+        },
+        card: async (o) => {
+          out(o, await api('POST', '/v1/validate/credit-card', { body: { number: $('ccNum').value } }));
+        },
+      };
+
+      document.querySelectorAll('button[data-act]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const card = btn.closest('article');
+          const o = card.querySelector('[data-out]');
+          btn.disabled = true;
+          try {
+            await actions[btn.dataset.act](o);
+          } catch (e) {
+            o.style.display = 'block';
+            out(o, e.message, true);
+          } finally {
+            btn.disabled = false;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

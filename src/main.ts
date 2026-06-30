@@ -1,10 +1,14 @@
 import 'dotenv/config';
+import { join } from 'node:path';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
-import type { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import type {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from 'express';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { ProblemDetailsFilter } from './common/filters/problem-details.filter';
@@ -30,6 +34,9 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new ProblemDetailsFilter());
+
+  // Landing + playground autocontenido servido en `/` (no pasa por los guards de Nest).
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   // ---- OpenAPI + Scalar --------------------------------------------------
   const config = new DocumentBuilder()

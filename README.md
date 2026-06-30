@@ -16,6 +16,7 @@ datos de prueba, validadores y más.
 - 🔳 **Generador de QR** (PNG/SVG, tamaño y colores configurables), con QR directo de cada enlace.
 - 🧰 **Toolbox**: datos fake reproducibles (seed/locale), UUID v4, slugify, validación de tarjetas (Luhn + marca) y generador de contraseñas (crypto + entropía).
 - 🔄 **Conversiones**: unidades (longitud, masa, volumen, área, velocidad, tiempo, datos, temperatura) y monedas con tasas en vivo (~160 divisas, cacheadas).
+- 🎮 **Landing + playground** en `/`: genera una API key temporal y prueba todos los módulos en vivo desde el navegador.
 - 📖 **Docs interactivas** en `/reference` (Scalar) + spec en `/openapi.json`.
 - ⚠️ **Errores consistentes** con [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) (`application/problem+json`).
 - 🧱 Versionado por URI (`/v1`), validación estricta, logs estructurados (pino), health check.
@@ -32,7 +33,7 @@ npm run prisma:migrate      # aplica migraciones
 npm run start:dev
 ```
 
-- API:    http://localhost:3000
+- Landing/playground: http://localhost:3000
 - Docs:   http://localhost:3000/reference
 - Spec:   http://localhost:3000/openapi.json
 - Health: http://localhost:3000/health
@@ -83,6 +84,7 @@ curl http://localhost:3000/v1/links/nest/stats \
 | `GET`  | `/v1/convert/currency` | ✅ | Convertir monedas (tasas en vivo) |
 | `POST` | `/v1/validate/credit-card` | ✅ | Validar tarjeta (Luhn) + marca |
 | `GET`  | `/r/:code` | — | Redirect público (registra clic) |
+| `GET`  | `/` | — | Landing + playground interactivo |
 | `GET`  | `/health` | — | Estado del servicio |
 
 **Rate limits:** `FREE` 30 req/min · `PRO` 120 req/min · anónimo 60 req/min (por IP).
@@ -106,6 +108,7 @@ src/
     health/      health check
   prisma/        servicio Prisma (adapter pg) + módulo global
   generated/     cliente Prisma (no se versiona)
+public/          landing + playground (index.html autocontenido, servido en /)
 ```
 
 ---
@@ -130,5 +133,5 @@ También incluye `Dockerfile` multi-stage para contenedor.
 - [x] Módulo **QR** (`POST /v1/qr`) integrado con Links
 - [x] Toolbox: **mock data** (seed/locale), **UUID**, **slugify**, **validación de tarjetas**
 - [x] Toolbox+: **conversiones** (monedas/unidades) y **generador de contraseñas**
-- [ ] Landing + playground (key temporal, demo en vivo)
+- [x] **Landing + playground** en `/` (key temporal, demo en vivo de todo el toolbox)
 - [ ] Tests e2e y CI
