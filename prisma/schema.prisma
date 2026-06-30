@@ -1,0 +1,74 @@
+// KolisKit API — esquema de datos
+// Generador moderno `prisma-client` (Prisma 6.6+) con driver adapter (pg).
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+  runtime      = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+/// Clave de API de un consumidor. Se guarda solo el hash SHA-256;
+/// el `prefix` es la parte visible para identificarla en el dashboard.
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  prefix     String    @unique // p.ej. "kk_live_AbC1" (primeros chars, visibles)
+  hash       String    @unique // SHA-256 de la clave completa
+  plan       Plan      @default(FREE)
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+
+  links Link[]
+
+  @@index([hash])
+  @@map("api_keys")
+}
+
+/// Enlace corto. `code` es el slug público usado en el redirect `GET /:code`.
+model Link {
+  id         String    @id @default(cuid())
+  code       String    @unique
+  targetUrl  String
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime?
+  clickCount Int       @default(0)
+
+  apiKeyId String
+  apiKey   ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  clicks ClickEvent[]
+
+  @@index([apiKeyId])
+  @@map("links")
+}
+
+/// Evento de clic para analytics. La IP nunca se guarda en claro: solo un hash.
+model ClickEvent {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  country   String?
+  city      String?
+  device    String? // desktop | mobile | tablet
+  browser   String?
+  os        String?
+  referrer  String?
+  ipHash    String?
+
+  linkId String
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId])
+  @@index([createdAt])
+  @@map("click_events")
+}
