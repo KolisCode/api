@@ -130,7 +130,15 @@ entorno limpio levanta un PostgreSQL, instala, hace **lint → build → migraci
 
 ## Deploy
 
-Build de producción:
+**En producción:** https://api.kolisevm.online (DigitalOcean · PM2 puerto 3007 · nginx + HTTPS · PostgreSQL).
+
+Deploy con un comando (rsync + build remoto + reload PM2):
+
+```bash
+./deploy.sh
+```
+
+Build manual de producción:
 
 ```bash
 npm run build
@@ -150,3 +158,4 @@ También incluye `Dockerfile` multi-stage para contenedor.
 - [x] Toolbox+: **conversiones** (monedas/unidades) y **generador de contraseñas**
 - [x] **Landing + playground** en `/` (key temporal, demo en vivo de todo el toolbox)
 - [x] **Tests e2e** (Jest + supertest) y **CI** (GitHub Actions: lint · build · e2e con Postgres)
+- [x] **Deploy** en producción → https://api.kolisevm.online (DigitalOcean · PM2 · nginx · HTTPS)
