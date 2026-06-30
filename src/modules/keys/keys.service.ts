@@ -17,7 +17,13 @@ export class KeysService {
         prefix: generated.prefix,
         hash: generated.hash,
       },
-      select: { id: true, name: true, prefix: true, plan: true, createdAt: true },
+      select: {
+        id: true,
+        name: true,
+        prefix: true,
+        plan: true,
+        createdAt: true,
+      },
     });
 
     return {

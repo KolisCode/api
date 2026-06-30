@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerRequest } from '@nestjs/throttler';
 import { Request } from 'express';
 import { Plan } from '../../generated/prisma/client';
@@ -18,11 +18,9 @@ const ANONYMOUS_LIMIT = 60;
  */
 @Injectable()
 export class PlanThrottlerGuard extends ThrottlerGuard {
-  protected async getTracker(req: Request): Promise<string> {
-    if (req.apiKey) {
-      return `key:${req.apiKey.id}`;
-    }
-    return `ip:${req.ip}`;
+  protected getTracker(req: Request): Promise<string> {
+    const tracker = req.apiKey ? `key:${req.apiKey.id}` : `ip:${req.ip}`;
+    return Promise.resolve(tracker);
   }
 
   protected async handleRequest(

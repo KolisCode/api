@@ -4,7 +4,8 @@ import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class ListLinksQuery {
   @ApiPropertyOptional({
-    description: 'Cursor de paginación (id del último elemento de la página previa).',
+    description:
+      'Cursor de paginación (id del último elemento de la página previa).',
   })
   @IsOptional()
   @IsString()

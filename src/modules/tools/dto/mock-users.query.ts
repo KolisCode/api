@@ -27,7 +27,8 @@ export class MockUsersQuery {
   locale: SupportedLocale = 'en';
 
   @ApiPropertyOptional({
-    description: 'Semilla para resultados reproducibles (mismo seed → mismos datos).',
+    description:
+      'Semilla para resultados reproducibles (mismo seed → mismos datos).',
     example: 42,
   })
   @IsOptional()

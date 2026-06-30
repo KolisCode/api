@@ -1,9 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentKey } from '../../common/auth/current-key.decorator';
 import type { AuthenticatedKey } from '../../common/auth/authenticated-key';
 import { Public } from '../../common/auth/public.decorator';

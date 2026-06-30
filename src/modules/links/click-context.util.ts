@@ -16,7 +16,8 @@ export function buildClickContext(req: Request): ClickContext {
     (req.headers['x-country'] as string | undefined);
 
   const referer = req.headers['referer'] ?? req.headers['referrer'];
-  const referrer = typeof referer === 'string' ? hostnameOf(referer) : undefined;
+  const referrer =
+    typeof referer === 'string' ? hostnameOf(referer) : undefined;
 
   return {
     device,

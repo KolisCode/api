@@ -9,10 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { ListLinksQuery } from './dto/list-links.query';
 
-const generateCode = customAlphabet(
-  '0123456789abcdefghijklmnopqrstuvwxyz',
-  7,
-);
+const generateCode = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7);
 
 export interface ClickContext {
   country?: string;
@@ -72,9 +69,7 @@ export class LinksService {
       where: { apiKeyId },
       orderBy: { createdAt: 'desc' },
       take: limit + 1, // +1 para saber si hay página siguiente
-      ...(query.cursor
-        ? { cursor: { id: query.cursor }, skip: 1 }
-        : {}),
+      ...(query.cursor ? { cursor: { id: query.cursor }, skip: 1 } : {}),
       select: this.publicFields(),
     });
 
@@ -111,7 +106,14 @@ export class LinksService {
   async stats(apiKeyId: string, code: string) {
     const link = await this.prisma.link.findUnique({
       where: { code },
-      select: { id: true, apiKeyId: true, code: true, targetUrl: true, clickCount: true, createdAt: true },
+      select: {
+        id: true,
+        apiKeyId: true,
+        code: true,
+        targetUrl: true,
+        clickCount: true,
+        createdAt: true,
+      },
     });
     if (!link || link.apiKeyId !== apiKeyId) {
       throw new NotFoundException('Enlace no encontrado.');
@@ -158,10 +160,15 @@ export class LinksService {
       const exists = await this.prisma.link.findUnique({ where: { code } });
       if (!exists) return code;
     }
-    throw new ConflictException('No se pudo generar un código único, reintenta.');
+    throw new ConflictException(
+      'No se pudo generar un código único, reintenta.',
+    );
   }
 
-  private async groupCount(linkId: string, field: 'device' | 'browser' | 'country') {
+  private async groupCount(
+    linkId: string,
+    field: 'device' | 'browser' | 'country',
+  ) {
     const rows = await this.prisma.clickEvent.groupBy({
       by: [field],
       where: { linkId },

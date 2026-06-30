@@ -1,13 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsHexColor,
-  IsIn,
-  IsInt,
-  IsOptional,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsHexColor, IsIn, IsInt, IsOptional, Max, Min } from 'class-validator';
 import type { QrEcLevel, QrFormat } from '../../qr/dto/create-qr.dto';
 
 /** Opciones del QR de un enlace (el contenido es el shortUrl). */
