@@ -9,17 +9,25 @@
       content="Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: { brand: { DEFAULT: '#6366f1', dark: '#4f46e5' } },
-            fontFamily: { mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
-          },
-        },
-      };
-    </script>
+    <link rel="canonical" href="https://api.kolisevm.online/" />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Open Graph / redes sociales (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="KolisKit" />
+    <meta property="og:title" content="KolisKit · Herramientas útiles en un clic" />
+    <meta property="og:description" content="Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro." />
+    <meta property="og:url" content="https://api.kolisevm.online/" />
+    <meta property="og:image" content="https://api.kolisevm.online/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="KolisKit · Herramientas útiles en un clic" />
+    <meta name="twitter:description" content="Acorta enlaces, crea QR, genera contraseñas seguras y convierte monedas. Gratis, sin registro." />
+    <meta name="twitter:image" content="https://api.kolisevm.online/og-image.png" />
+
+    <link rel="stylesheet" href="/styles.css" />
     <style>
       body { background: radial-gradient(1200px 600px at 80% -10%, #1e1b4b 0%, #020617 55%); }
       pre { white-space: pre-wrap; word-break: break-word; }
@@ -229,27 +237,33 @@
       <a href="#devs" class="text-indigo-400 hover:underline">API para desarrolladores</a>
     </footer>
 
-    <!-- Estilos utilitarios compartidos -->
+    <!-- Estilos utilitarios compartidos. Van en @layer components para que las
+         utilidades de Tailwind v4 (@layer utilities, p. ej. w-28 o flex-1)
+         puedan sobreescribirlos, igual que hacían con el CDN. -->
     <style>
-      .inp { display:block; width:100%; border-radius:.5rem; background:#0f172a; border:1px solid rgba(255,255,255,.1); padding:.5rem .75rem; font-size:.875rem; color:#e2e8f0; outline:none; }
-      .inp:focus { border-color:#6366f1; }
-      .btn { padding:.5rem 1rem; border-radius:.5rem; background:#6366f1; font-weight:600; font-size:.875rem; color:#fff; }
-      .btn:hover { background:#4f46e5; }
-      .btn:disabled { opacity:.6 }
-      .btn-ghost { padding:.5rem 1rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.15); font-weight:600; font-size:.875rem; }
-      .btn-ghost:hover { background:rgba(255,255,255,.1); }
-      .out { margin-top:.75rem; font-size:.875rem; color:#e2e8f0; background:#020617; border:1px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.75rem; max-height:280px; overflow:auto; }
-      .out:empty { display:none; }
-      .out .big { font-size:1.05rem; font-weight:700; color:#fff; word-break:break-all; }
-      .out .row { display:flex; align-items:center; gap:.5rem; padding:.2rem 0; }
-      .out .mono { font-family:ui-monospace,monospace; font-size:.8rem; word-break:break-all; }
-      .out .muted { color:#94a3b8; font-size:.75rem; }
-      .out .err { color:#fb7185; }
-      .copy { flex-shrink:0; font-size:.7rem; padding:.15rem .5rem; border-radius:.375rem; border:1px solid rgba(255,255,255,.2); color:#cbd5e1; cursor:pointer; }
-      .copy:hover { background:rgba(255,255,255,.1); }
-      .out details { margin-top:.5rem; }
-      .out details summary { cursor:pointer; color:#64748b; font-size:.7rem; }
-      .out details pre { font-family:ui-monospace,monospace; font-size:.7rem; color:#94a3b8; margin-top:.35rem; }
+      @layer components {
+        /* Tailwind v4 ya no pone cursor pointer en botones; lo restauramos. */
+        button, select, summary { cursor: pointer; }
+        .inp { display:block; width:100%; border-radius:.5rem; background:#0f172a; border:1px solid rgba(255,255,255,.1); padding:.5rem .75rem; font-size:.875rem; color:#e2e8f0; outline:none; }
+        .inp:focus { border-color:#6366f1; }
+        .btn { padding:.5rem 1rem; border-radius:.5rem; background:#6366f1; font-weight:600; font-size:.875rem; color:#fff; }
+        .btn:hover { background:#4f46e5; }
+        .btn:disabled { opacity:.6 }
+        .btn-ghost { padding:.5rem 1rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.15); font-weight:600; font-size:.875rem; }
+        .btn-ghost:hover { background:rgba(255,255,255,.1); }
+        .out { margin-top:.75rem; font-size:.875rem; color:#e2e8f0; background:#020617; border:1px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.75rem; max-height:280px; overflow:auto; }
+        .out:empty { display:none; }
+        .out .big { font-size:1.05rem; font-weight:700; color:#fff; word-break:break-all; }
+        .out .row { display:flex; align-items:center; gap:.5rem; padding:.2rem 0; }
+        .out .mono { font-family:ui-monospace,monospace; font-size:.8rem; word-break:break-all; }
+        .out .muted { color:#94a3b8; font-size:.75rem; }
+        .out .err { color:#fb7185; }
+        .copy { flex-shrink:0; font-size:.7rem; padding:.15rem .5rem; border-radius:.375rem; border:1px solid rgba(255,255,255,.2); color:#cbd5e1; cursor:pointer; }
+        .copy:hover { background:rgba(255,255,255,.1); }
+        .out details { margin-top:.5rem; }
+        .out details summary { cursor:pointer; color:#64748b; font-size:.7rem; }
+        .out details pre { font-family:ui-monospace,monospace; font-size:.7rem; color:#94a3b8; margin-top:.35rem; }
+      }
     </style>
 
     <script>

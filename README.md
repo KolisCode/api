@@ -30,6 +30,7 @@ cp .env.example .env        # ajusta secretos si quieres
 npm install
 npm run db:up               # Postgres en Docker (puerto 5434)
 npm run prisma:migrate      # aplica migraciones
+npm run build:css           # genera public/styles.css (Tailwind)
 npm run start:dev
 ```
 

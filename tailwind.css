@@ -1,0 +1,12 @@
+/*
+ * Hoja fuente de Tailwind v4 — se compila a public/styles.css con
+ * `npm run build:css` (integrado en `npm run build`).
+ * Solo escanea public/ (la landing); el backend no usa clases utilitarias.
+ */
+@import 'tailwindcss' source(none);
+@source './public';
+
+@theme {
+  --color-brand: #6366f1;
+  --color-brand-dark: #4f46e5;
+}

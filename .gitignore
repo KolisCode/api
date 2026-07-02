@@ -8,6 +8,9 @@
 # Prisma — cliente generado
 /src/generated
 
+# Tailwind — CSS compilado (se genera con npm run build:css)
+/public/styles.css
+
 # Entorno
 .env
 .env.local
