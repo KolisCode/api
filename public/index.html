@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KolisKit API · Toolbox para devs</title>
+    <title>KolisKit · Herramientas útiles en un clic</title>
     <meta
       name="description"
-      content="API de utilidades para desarrolladores: enlaces cortos con analytics, QR, contraseñas, conversiones y más. Pruébala en vivo."
+      content="Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro."
     />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -28,12 +29,10 @@
     <!-- ===== NAV ===== -->
     <header class="sticky top-0 z-20 backdrop-blur border-b border-white/10 bg-slate-950/60">
       <div class="max-w-6xl mx-auto px-5 py-3 flex items-center gap-3">
-        <span class="text-xl font-bold tracking-tight">🧰 KolisKit<span class="text-brand">API</span></span>
+        <span class="text-xl font-bold tracking-tight">🧰 Kolis<span class="text-brand">Kit</span></span>
         <nav class="ml-auto flex items-center gap-2 text-sm">
-          <a href="/reference" class="px-3 py-1.5 rounded-lg hover:bg-white/10">Docs</a>
-          <a href="/openapi.json" class="px-3 py-1.5 rounded-lg hover:bg-white/10">OpenAPI</a>
-          <a href="https://github.com/KolisCode/api" target="_blank" rel="noopener"
-            class="px-3 py-1.5 rounded-lg hover:bg-white/10">GitHub</a>
+          <a href="#herramientas" class="px-3 py-1.5 rounded-lg hover:bg-white/10">Herramientas</a>
+          <a href="#devs" class="px-3 py-1.5 rounded-lg hover:bg-white/10">Para desarrolladores</a>
         </nav>
       </div>
     </header>
@@ -41,162 +40,193 @@
     <!-- ===== HERO ===== -->
     <section class="max-w-6xl mx-auto px-5 pt-16 pb-10 text-center">
       <p class="inline-block mb-4 px-3 py-1 rounded-full text-xs font-medium bg-brand/15 text-indigo-300 border border-brand/30">
-        NestJS · Prisma · PostgreSQL · OpenAPI
+        Gratis · Sin registro · Funciona al instante
       </p>
       <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Una API, todo el <span class="text-brand">toolbox</span>.
+        Herramientas útiles, <span class="text-brand">en un clic</span>.
       </h1>
       <p class="mt-4 max-w-2xl mx-auto text-slate-400">
-        Enlaces cortos con analytics, QR, contraseñas seguras, conversiones de unidades y monedas,
-        datos de prueba y más — con API keys, rate limiting por plan y errores RFC 7807.
+        Acorta enlaces y mira cuánta gente los abre, crea códigos QR, genera contraseñas
+        seguras, convierte monedas y unidades, y más. Sin crear cuenta ni instalar nada.
       </p>
       <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
-        <a href="#playground" class="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark font-semibold text-white shadow-lg shadow-brand/30">
-          Probar en vivo ↓
-        </a>
-        <a href="/reference" class="px-5 py-2.5 rounded-xl border border-white/15 hover:bg-white/10 font-semibold">
-          Ver documentación
+        <a href="#herramientas" class="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark font-semibold text-white shadow-lg shadow-brand/30">
+          Usar las herramientas ↓
         </a>
       </div>
-    </section>
-
-    <!-- ===== KEY BAR ===== -->
-    <section id="playground" class="max-w-6xl mx-auto px-5 scroll-mt-20">
-      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-        <div class="flex flex-wrap items-end gap-3">
-          <div class="flex-1 min-w-[200px]">
-            <label class="block text-xs text-slate-400 mb-1">1 · Genera tu API key (plan FREE)</label>
-            <input id="keyName" value="playground" placeholder="nombre de la app"
-              class="w-full rounded-lg bg-slate-900 border border-white/10 px-3 py-2 text-sm outline-none focus:border-brand" />
-          </div>
-          <button id="genKey" class="px-4 py-2 rounded-lg bg-brand hover:bg-brand-dark font-semibold text-white text-sm">
-            Generar key
-          </button>
-          <div id="keyStatus" class="text-sm text-slate-400">Sin key — el playground está bloqueado.</div>
-        </div>
-        <div id="keyBox" class="hidden mt-3 font-mono text-xs bg-slate-950 rounded-lg p-3 border border-emerald-500/30 text-emerald-300 break-all"></div>
-      </div>
+      <p id="accessNote" class="mt-4 text-xs text-slate-500">
+        Tu acceso gratuito se activa solo la primera vez que uses una herramienta.
+      </p>
     </section>
 
     <!-- ===== CARDS ===== -->
-    <main class="max-w-6xl mx-auto px-5 py-8">
-      <fieldset id="pg" disabled class="opacity-50 transition-opacity grid md:grid-cols-2 gap-5">
+    <main id="herramientas" class="max-w-6xl mx-auto px-5 py-8 scroll-mt-20">
+      <div class="grid md:grid-cols-2 gap-5">
 
         <!-- Enlaces cortos -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">🔗 Enlace corto + analytics</h3>
-          <p class="text-xs text-slate-400 mb-3">El módulo estrella. Crea un enlace y consulta sus clics.</p>
-          <input id="lnUrl" value="https://nestjs.com/" placeholder="https://destino.com"
-            class="inp mb-2" />
-          <input id="lnCode" placeholder="código opcional (ej. nest)" class="inp mb-2" />
+          <h3 class="font-semibold text-white mb-1">🔗 Acorta un enlace</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Convierte una dirección larga en un enlace corto fácil de compartir, y mira cuántas personas lo abren.
+          </p>
+          <input id="lnUrl" value="https://es.wikipedia.org/wiki/Colombia" placeholder="Pega aquí la dirección (https://…)" class="inp mb-2" />
+          <input id="lnCode" placeholder="Nombre corto opcional (ej. mi-pagina)" class="inp mb-2" />
           <div class="flex gap-2">
-            <button data-act="link-create" class="btn">Crear enlace</button>
-            <button data-act="link-stats" class="btn-ghost">Ver stats</button>
+            <button data-act="link-create" class="btn">Acortar enlace</button>
+            <button data-act="link-stats" class="btn-ghost">¿Cuántas visitas lleva?</button>
           </div>
-          <pre data-out class="out"></pre>
+          <div data-out class="out"></div>
         </article>
 
         <!-- QR -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">🔳 Generador de QR</h3>
-          <p class="text-xs text-slate-400 mb-3">PNG o SVG de cualquier texto o URL.</p>
-          <input id="qrData" value="https://koliskit.dev" placeholder="texto o URL" class="inp mb-2" />
+          <h3 class="font-semibold text-white mb-1">🔳 Crea un código QR</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Genera la imagen QR de una página web o un texto, lista para imprimir o compartir.
+          </p>
+          <input id="qrData" value="https://api.kolisevm.online" placeholder="Página web o texto" class="inp mb-2" />
           <div class="flex gap-2 items-center">
-            <select id="qrFormat" class="inp w-28"><option>png</option><option>svg</option></select>
-            <button data-act="qr" class="btn">Generar QR</button>
+            <select id="qrFormat" class="inp w-40">
+              <option value="png">Imagen (PNG)</option>
+              <option value="svg">Vectorial (SVG)</option>
+            </select>
+            <button data-act="qr" class="btn">Crear QR</button>
           </div>
-          <div data-out class="out flex items-center justify-center min-h-[80px]"></div>
+          <div data-out class="out"></div>
         </article>
 
         <!-- Password -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">🔐 Contraseñas seguras</h3>
-          <p class="text-xs text-slate-400 mb-3">crypto.randomInt · entropía y fuerza calculadas.</p>
+          <h3 class="font-semibold text-white mb-1">🔐 Genera contraseñas seguras</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Contraseñas realmente aleatorias, imposibles de adivinar. Copia la que más te guste.
+          </p>
           <div class="flex flex-wrap gap-3 items-center text-sm mb-2">
-            <label>Longitud <input id="pwLen" type="number" value="16" min="8" max="128" class="inp w-20 inline-block" /></label>
-            <label>Cantidad <input id="pwCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
+            <label>Largo <input id="pwLen" type="number" value="16" min="8" max="128" class="inp w-20 inline-block" /></label>
+            <label>Cuántas <input id="pwCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
           </div>
           <div class="flex flex-wrap gap-3 text-xs mb-3">
-            <label><input type="checkbox" id="pwUpper" checked /> A-Z</label>
-            <label><input type="checkbox" id="pwLower" checked /> a-z</label>
-            <label><input type="checkbox" id="pwNum" checked /> 0-9</label>
-            <label><input type="checkbox" id="pwSym" checked /> !@#</label>
-            <label><input type="checkbox" id="pwExcl" /> sin confundibles</label>
+            <label><input type="checkbox" id="pwUpper" checked /> Mayúsculas</label>
+            <label><input type="checkbox" id="pwLower" checked /> minúsculas</label>
+            <label><input type="checkbox" id="pwNum" checked /> Números</label>
+            <label><input type="checkbox" id="pwSym" checked /> Símbolos</label>
+            <label title="Evita letras que se confunden entre sí, como l, 1, O y 0"><input type="checkbox" id="pwExcl" /> Evitar letras confusas</label>
           </div>
           <button data-act="password" class="btn">Generar</button>
-          <pre data-out class="out"></pre>
+          <div data-out class="out"></div>
         </article>
 
         <!-- Convert units -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">📏 Conversión de unidades</h3>
-          <p class="text-xs text-slate-400 mb-3">Longitud, masa, volumen, área, velocidad, tiempo, datos, temperatura.</p>
-          <div class="flex gap-2 mb-2">
+          <h3 class="font-semibold text-white mb-1">📏 Convierte unidades</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Kilómetros a millas, kilos a libras, grados Celsius a Fahrenheit… elige y convierte.
+          </p>
+          <select id="unCat" class="inp mb-2"></select>
+          <div class="flex gap-2 mb-2 items-center">
             <input id="unVal" type="number" value="100" class="inp w-24" />
-            <input id="unFrom" value="km" placeholder="de" class="inp w-24" />
-            <span class="self-center text-slate-500">→</span>
-            <input id="unTo" value="mi" placeholder="a" class="inp w-24" />
+            <select id="unFrom" class="inp flex-1"></select>
+            <span class="text-slate-500">→</span>
+            <select id="unTo" class="inp flex-1"></select>
           </div>
           <button data-act="units" class="btn">Convertir</button>
-          <pre data-out class="out"></pre>
+          <div data-out class="out"></div>
         </article>
 
         <!-- Convert currency -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">💱 Conversión de monedas</h3>
-          <p class="text-xs text-slate-400 mb-3">Tasas en vivo (~160 divisas, cacheadas).</p>
-          <div class="flex gap-2 mb-2">
-            <input id="cuAmt" type="number" value="100" class="inp w-24" />
-            <input id="cuFrom" value="USD" maxlength="3" class="inp w-20 uppercase" />
-            <span class="self-center text-slate-500">→</span>
-            <input id="cuTo" value="EUR" maxlength="3" class="inp w-20 uppercase" />
+          <h3 class="font-semibold text-white mb-1">💱 Convierte monedas</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Con tasas de cambio reales del día, para unas 160 monedas del mundo.
+          </p>
+          <div class="flex gap-2 mb-2 items-center">
+            <input id="cuAmt" type="number" value="100" class="inp w-28" />
+            <select id="cuFrom" class="inp flex-1"></select>
+            <span class="text-slate-500">→</span>
+            <select id="cuTo" class="inp flex-1"></select>
           </div>
           <button data-act="currency" class="btn">Convertir</button>
-          <pre data-out class="out"></pre>
+          <div data-out class="out"></div>
         </article>
 
         <!-- Mock users -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">👤 Datos de prueba</h3>
-          <p class="text-xs text-slate-400 mb-3">Usuarios fake realistas (faker), reproducibles con seed.</p>
+          <h3 class="font-semibold text-white mb-1">👤 Inventa personas de ejemplo</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Nombres, correos y datos ficticios pero realistas. Útiles para plantillas, demos o pruebas.
+          </p>
           <div class="flex gap-2 mb-2 items-center text-sm">
-            <label>N° <input id="mkCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
-            <select id="mkLocale" class="inp w-24"><option value="es">es</option><option value="en">en</option></select>
+            <label>Cuántas <input id="mkCount" type="number" value="3" min="1" max="50" class="inp w-20 inline-block" /></label>
+            <select id="mkLocale" class="inp w-32">
+              <option value="es">En español</option>
+              <option value="en">En inglés</option>
+            </select>
           </div>
-          <button data-act="mock" class="btn">Generar</button>
-          <pre data-out class="out"></pre>
-        </article>
-
-        <!-- UUID + Slugify -->
-        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">🆔 UUID y slugify</h3>
-          <p class="text-xs text-slate-400 mb-3">UUID v4 y conversión de texto a slug URL-safe.</p>
-          <div class="flex gap-2 mb-2">
-            <input id="uuidN" type="number" value="3" min="1" max="100" class="inp w-24" />
-            <button data-act="uuid" class="btn">UUIDs</button>
-          </div>
-          <div class="flex gap-2">
-            <input id="slugText" value="¡Hola Mundo del Ñandú!" class="inp" />
-            <button data-act="slug" class="btn">Slug</button>
-          </div>
-          <pre data-out class="out"></pre>
+          <button data-act="mock" class="btn">Generar personas</button>
+          <div data-out class="out"></div>
         </article>
 
         <!-- Credit card -->
         <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 class="font-semibold text-white mb-1">💳 Validar tarjeta</h3>
-          <p class="text-xs text-slate-400 mb-3">Algoritmo de Luhn + detección de marca.</p>
-          <input id="ccNum" value="4242 4242 4242 4242" class="inp mb-2" />
-          <button data-act="card" class="btn">Validar</button>
-          <pre data-out class="out"></pre>
+          <h3 class="font-semibold text-white mb-1">💳 Revisa un número de tarjeta</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Comprueba si un número de tarjeta está bien escrito y de qué marca es.
+            No consulta ningún banco: solo revisa el formato del número.
+          </p>
+          <input id="ccNum" value="4242 4242 4242 4242" placeholder="Número de tarjeta" class="inp mb-2" />
+          <button data-act="card" class="btn">Revisar</button>
+          <div data-out class="out"></div>
         </article>
 
-      </fieldset>
+        <!-- UUID + Slugify -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🆔 Códigos únicos y nombres para enlaces</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Genera identificadores únicos, o convierte un título ("¡Mi Página!") en un
+            nombre apto para direcciones web ("mi-pagina").
+          </p>
+          <div class="flex gap-2 mb-2">
+            <input id="uuidN" type="number" value="3" min="1" max="100" class="inp w-24" />
+            <button data-act="uuid" class="btn">Códigos únicos</button>
+          </div>
+          <div class="flex gap-2">
+            <input id="slugText" value="¡Hola Mundo del Ñandú!" class="inp" />
+            <button data-act="slug" class="btn">Convertir título</button>
+          </div>
+          <div data-out class="out"></div>
+        </article>
+
+      </div>
     </main>
 
+    <!-- ===== DEVS ===== -->
+    <section id="devs" class="max-w-6xl mx-auto px-5 pb-10 scroll-mt-20">
+      <details class="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <summary class="cursor-pointer font-semibold text-white">👩‍💻 ¿Eres desarrollador?</summary>
+        <div class="mt-3 text-sm text-slate-400 space-y-3">
+          <p>
+            Todo lo de arriba es una API REST: NestJS · Prisma · PostgreSQL, con API keys,
+            rate limiting por plan, errores RFC 7807 y OpenAPI.
+          </p>
+          <p class="flex flex-wrap gap-2">
+            <a href="/reference" class="px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 text-slate-200">📖 Documentación interactiva</a>
+            <a href="/openapi.json" class="px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 text-slate-200">Spec OpenAPI</a>
+            <a href="https://github.com/KolisCode/api" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 text-slate-200">GitHub</a>
+          </p>
+          <div id="devKeyBox" class="hidden">
+            <p class="text-slate-300 font-medium mb-1">Tu API key de esta sesión (plan FREE):</p>
+            <p class="font-mono text-xs bg-slate-950 rounded-lg p-3 border border-emerald-500/30 text-emerald-300 break-all" id="devKey"></p>
+          </div>
+          <pre class="font-mono text-xs bg-slate-950 rounded-lg p-3 border border-white/10 text-slate-300">curl -X POST https://api.kolisevm.online/v1/keys \
+  -H 'Content-Type: application/json' -d '{"name":"mi-app"}'
+# → { "key": "kk_live_…" }  · úsala como Authorization: Bearer &lt;key&gt;</pre>
+        </div>
+      </details>
+    </section>
+
     <footer class="max-w-6xl mx-auto px-5 py-10 text-center text-xs text-slate-500 border-t border-white/10">
-      KolisKit API — toolbox de portafolio. Hecho con NestJS, Prisma y PostgreSQL ·
-      <a href="/reference" class="text-indigo-400 hover:underline">Documentación</a>
+      KolisKit — herramientas en línea gratuitas ·
+      <a href="#devs" class="text-indigo-400 hover:underline">API para desarrolladores</a>
     </footer>
 
     <!-- Estilos utilitarios compartidos -->
@@ -205,86 +235,174 @@
       .inp:focus { border-color:#6366f1; }
       .btn { padding:.5rem 1rem; border-radius:.5rem; background:#6366f1; font-weight:600; font-size:.875rem; color:#fff; }
       .btn:hover { background:#4f46e5; }
+      .btn:disabled { opacity:.6 }
       .btn-ghost { padding:.5rem 1rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.15); font-weight:600; font-size:.875rem; }
       .btn-ghost:hover { background:rgba(255,255,255,.1); }
-      .out { margin-top:.75rem; font-family:ui-monospace,monospace; font-size:.75rem; color:#cbd5e1; background:#020617; border:1px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.75rem; max-height:240px; overflow:auto; }
+      .out { margin-top:.75rem; font-size:.875rem; color:#e2e8f0; background:#020617; border:1px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.75rem; max-height:280px; overflow:auto; }
       .out:empty { display:none; }
+      .out .big { font-size:1.05rem; font-weight:700; color:#fff; word-break:break-all; }
+      .out .row { display:flex; align-items:center; gap:.5rem; padding:.2rem 0; }
+      .out .mono { font-family:ui-monospace,monospace; font-size:.8rem; word-break:break-all; }
+      .out .muted { color:#94a3b8; font-size:.75rem; }
+      .out .err { color:#fb7185; }
+      .copy { flex-shrink:0; font-size:.7rem; padding:.15rem .5rem; border-radius:.375rem; border:1px solid rgba(255,255,255,.2); color:#cbd5e1; cursor:pointer; }
+      .copy:hover { background:rgba(255,255,255,.1); }
+      .out details { margin-top:.5rem; }
+      .out details summary { cursor:pointer; color:#64748b; font-size:.7rem; }
+      .out details pre { font-family:ui-monospace,monospace; font-size:.7rem; color:#94a3b8; margin-top:.35rem; }
     </style>
 
     <script>
       const $ = (id) => document.getElementById(id);
       const state = { key: localStorage.getItem('kk_key') || '' };
 
-      // ---- HTTP helper (RFC 7807 aware) ----
-      async function api(method, path, { body, raw } = {}) {
-        const headers = {};
-        if (state.key) headers['Authorization'] = 'Bearer ' + state.key;
-        if (body) headers['Content-Type'] = 'application/json';
-        const res = await fetch(path, {
-          method,
-          headers,
-          body: body ? JSON.stringify(body) : undefined,
+      // ---- unidades y monedas (código → nombre entendible) ----
+      const UNITS = {
+        'Longitud (distancias)': [['km','kilómetros'],['m','metros'],['cm','centímetros'],['mm','milímetros'],['mi','millas'],['yd','yardas'],['ft','pies'],['in','pulgadas'],['nmi','millas náuticas']],
+        'Peso / masa': [['kg','kilogramos'],['g','gramos'],['mg','miligramos'],['t','toneladas'],['lb','libras'],['oz','onzas'],['st','stones']],
+        'Volumen (líquidos)': [['l','litros'],['ml','mililitros'],['m3','metros cúbicos'],['gal','galones'],['qt','cuartos de galón'],['pt','pintas'],['cup','tazas'],['floz','onzas líquidas']],
+        'Área (terrenos)': [['m2','metros cuadrados'],['km2','kilómetros cuadrados'],['cm2','centímetros cuadrados'],['ha','hectáreas'],['acre','acres'],['ft2','pies cuadrados'],['mi2','millas cuadradas']],
+        'Velocidad': [['km/h','kilómetros por hora'],['m/s','metros por segundo'],['mph','millas por hora'],['kn','nudos'],['ft/s','pies por segundo']],
+        'Tiempo': [['h','horas'],['min','minutos'],['s','segundos'],['ms','milisegundos'],['d','días'],['wk','semanas']],
+        'Datos (archivos)': [['GB','gigabytes'],['MB','megabytes'],['KB','kilobytes'],['B','bytes'],['TB','terabytes'],['bit','bits'],['Mb','megabits'],['Gb','gigabits']],
+        'Temperatura': [['C','grados Celsius (°C)'],['F','grados Fahrenheit (°F)'],['K','kelvin (K)']],
+      };
+      const CURRENCIES = [
+        ['USD','Dólar (EE.UU.)'],['EUR','Euro'],['COP','Peso colombiano'],['MXN','Peso mexicano'],
+        ['PEN','Sol peruano'],['CLP','Peso chileno'],['ARS','Peso argentino'],['BRL','Real brasileño'],
+        ['GBP','Libra esterlina'],['JPY','Yen japonés'],['CAD','Dólar canadiense'],['CHF','Franco suizo'],
+        ['CNY','Yuan chino'],['AUD','Dólar australiano'],
+      ];
+      const STRENGTH = { weak: 'Débil 😟', fair: 'Aceptable 🙂', strong: 'Fuerte 💪', 'very-strong': 'Muy fuerte 🔒' };
+
+      function fillUnitSelects() {
+        const cat = $('unCat');
+        for (const name of Object.keys(UNITS)) cat.add(new Option(name, name));
+        const refresh = () => {
+          const list = UNITS[cat.value];
+          for (const sel of [$('unFrom'), $('unTo')]) {
+            sel.innerHTML = '';
+            for (const [code, label] of list) sel.add(new Option(label, code));
+          }
+          $('unTo').selectedIndex = Math.min(1, list.length - 1);
+        };
+        cat.addEventListener('change', refresh);
+        refresh();
+      }
+      function fillCurrencySelects() {
+        for (const sel of [$('cuFrom'), $('cuTo')]) {
+          for (const [code, label] of CURRENCIES) sel.add(new Option(`${label} — ${code}`, code));
+        }
+        $('cuFrom').value = 'USD';
+        $('cuTo').value = 'COP';
+      }
+      fillUnitSelects();
+      fillCurrencySelects();
+
+      // ---- HTTP con acceso automático (la key se crea sola y se reintenta si caducó) ----
+      const safeJson = async (res) => { try { return await res.json(); } catch { return null; } };
+
+      async function createKey() {
+        const res = await fetch('/v1/keys', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: 'playground-web' }),
         });
+        const data = await safeJson(res);
+        if (!res.ok || !data?.key) throw new Error('No se pudo activar el acceso. Intenta de nuevo en unos segundos.');
+        state.key = data.key;
+        localStorage.setItem('kk_key', state.key);
+        showDevKey();
+      }
+      function showDevKey() {
+        if (!state.key) return;
+        $('devKeyBox').classList.remove('hidden');
+        $('devKey').textContent = state.key;
+        $('accessNote').textContent = '✅ Acceso activo — usa cualquier herramienta.';
+      }
+      if (state.key) showDevKey();
+
+      async function api(method, path, { body, raw } = {}) {
+        if (!state.key) await createKey();
+        const doFetch = () =>
+          fetch(path, {
+            method,
+            headers: {
+              Authorization: 'Bearer ' + state.key,
+              ...(body ? { 'Content-Type': 'application/json' } : {}),
+            },
+            body: body ? JSON.stringify(body) : undefined,
+          });
+        let res = await doFetch();
+        if (res.status === 401) {
+          // La key guardada ya no sirve (p. ej. se reinició el servidor): crear otra y reintentar.
+          state.key = '';
+          localStorage.removeItem('kk_key');
+          await createKey();
+          res = await doFetch();
+        }
         if (raw) {
-          if (!res.ok) throw new Error((await safeJson(res))?.detail || res.statusText);
+          if (!res.ok) throw new Error((await safeJson(res))?.detail || 'Algo salió mal. Intenta de nuevo.');
           return res;
         }
         const data = await safeJson(res);
-        if (!res.ok) throw new Error(data?.detail || data?.message || res.statusText);
+        if (!res.ok) throw new Error(data?.detail || data?.message || 'Algo salió mal. Intenta de nuevo.');
         return data;
       }
-      const safeJson = async (res) => { try { return await res.json(); } catch { return null; } };
 
-      function out(el, data, isError = false) {
-        el.style.color = isError ? '#fb7185' : '#cbd5e1';
-        el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-      }
+      // ---- render amigable ----
+      const esc = (s) =>
+        String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+      const copyBtn = (text) => `<button class="copy" data-copy="${esc(text)}">Copiar</button>`;
 
-      // ---- key management ----
-      function applyKey(masked) {
-        $('pg').disabled = !state.key;
-        $('pg').classList.toggle('opacity-50', !state.key);
-        if (state.key) {
-          $('keyStatus').innerHTML = '<span class="text-emerald-400">● key activa</span>';
+      function render(el, html, json) {
+        el.innerHTML = html;
+        if (json !== undefined) {
+          const det = document.createElement('details');
+          det.innerHTML = '<summary>Ver respuesta técnica (JSON)</summary><pre></pre>';
+          det.querySelector('pre').textContent = JSON.stringify(json, null, 2);
+          el.appendChild(det);
         }
       }
-      if (state.key) {
-        $('keyBox').classList.remove('hidden');
-        $('keyBox').textContent = state.key;
-        applyKey();
-      }
+      const renderError = (el, msg) => { el.innerHTML = `<div class="err">⚠️ ${esc(msg)}</div>`; };
 
-      $('genKey').addEventListener('click', async () => {
-        $('genKey').disabled = true;
+      document.addEventListener('click', async (e) => {
+        const b = e.target.closest('.copy');
+        if (!b) return;
         try {
-          const r = await api('POST', '/v1/keys', { body: { name: $('keyName').value || 'playground' } });
-          state.key = r.key;
-          localStorage.setItem('kk_key', r.key);
-          $('keyBox').classList.remove('hidden');
-          $('keyBox').textContent = r.key + '  —  ' + r.warning;
-          applyKey();
-        } catch (e) {
-          $('keyBox').classList.remove('hidden');
-          out($('keyBox'), e.message, true);
-        } finally {
-          $('genKey').disabled = false;
-        }
+          await navigator.clipboard.writeText(b.dataset.copy);
+          const prev = b.textContent;
+          b.textContent = '✓ Copiado';
+          setTimeout(() => (b.textContent = prev), 1200);
+        } catch { /* portapapeles no disponible */ }
       });
 
-      // ---- card actions ----
+      const fmt = (n) => Number(n).toLocaleString('es-CO', { maximumFractionDigits: 6 });
+
+      // ---- acciones ----
       const lastCode = { value: '' };
       const actions = {
         'link-create': async (o) => {
-          const body = { targetUrl: $('lnUrl').value };
+          const body = { targetUrl: $('lnUrl').value.trim() };
           if ($('lnCode').value.trim()) body.code = $('lnCode').value.trim();
           const r = await api('POST', '/v1/links', { body });
           lastCode.value = r.code;
-          out(o, r);
+          render(o, `
+            <div class="muted">Tu enlace corto está listo:</div>
+            <div class="row"><a class="big text-indigo-300 hover:underline" href="${esc(r.shortUrl)}" target="_blank" rel="noopener">${esc(r.shortUrl)}</a>${copyBtn(r.shortUrl)}</div>
+            <div class="muted">Compártelo donde quieras. Luego pulsa “¿Cuántas visitas lleva?” para ver el conteo.</div>
+          `, r);
         },
         'link-stats': async (o) => {
           const code = $('lnCode').value.trim() || lastCode.value;
-          if (!code) throw new Error('Crea un enlace primero o escribe un código.');
-          out(o, await api('GET', `/v1/links/${code}/stats`));
+          if (!code) throw new Error('Primero acorta un enlace (o escribe su nombre corto en la segunda casilla).');
+          const r = await api('GET', `/v1/links/${encodeURIComponent(code)}/stats`);
+          const devices = r.byDevice.map((d) => `${esc(d.value)}: ${d.count}`).join(' · ');
+          render(o, `
+            <div class="big">👁 ${fmt(r.totalClicks)} visita${r.totalClicks === 1 ? '' : 's'}</div>
+            <div class="muted">Enlace: /r/${esc(r.code)} → ${esc(r.targetUrl)}</div>
+            ${devices ? `<div class="muted">Desde: ${devices}</div>` : ''}
+          `, r);
         },
         qr: async (o) => {
           const res = await api('POST', '/v1/qr', {
@@ -292,40 +410,64 @@
             body: { data: $('qrData').value, format: $('qrFormat').value },
           });
           const url = URL.createObjectURL(await res.blob());
-          o.innerHTML = `<img src="${url}" alt="QR" class="max-h-48 rounded bg-white p-2" />`;
+          render(o, `
+            <div class="row" style="justify-content:center"><img src="${url}" alt="Código QR" class="max-h-48 rounded bg-white p-2" /></div>
+            <div class="muted" style="text-align:center">Clic derecho (o mantener pulsado) → “Guardar imagen”.</div>
+          `);
         },
         password: async (o) => {
           const q = new URLSearchParams({
-            length: $('pwLen').value,
-            count: $('pwCount').value,
-            uppercase: $('pwUpper').checked,
-            lowercase: $('pwLower').checked,
-            numbers: $('pwNum').checked,
-            symbols: $('pwSym').checked,
+            length: $('pwLen').value, count: $('pwCount').value,
+            uppercase: $('pwUpper').checked, lowercase: $('pwLower').checked,
+            numbers: $('pwNum').checked, symbols: $('pwSym').checked,
             excludeSimilar: $('pwExcl').checked,
           });
-          out(o, await api('GET', '/v1/tools/password?' + q));
+          const r = await api('GET', '/v1/tools/password?' + q);
+          const rows = r.passwords.map((p) => `<div class="row"><span class="mono">${esc(p)}</span>${copyBtn(p)}</div>`).join('');
+          render(o, `${rows}<div class="muted">Seguridad: ${STRENGTH[r.strength] ?? esc(r.strength)}</div>`, r);
         },
         units: async (o) => {
           const q = new URLSearchParams({ value: $('unVal').value, from: $('unFrom').value, to: $('unTo').value });
-          out(o, await api('GET', '/v1/convert/units?' + q));
+          const r = await api('GET', '/v1/convert/units?' + q);
+          const fromLabel = $('unFrom').selectedOptions[0].text;
+          const toLabel = $('unTo').selectedOptions[0].text;
+          render(o, `
+            <div class="big">${fmt(r.value)} ${esc(fromLabel)} = ${fmt(r.result)} ${esc(toLabel)}</div>
+          `, r);
         },
         currency: async (o) => {
           const q = new URLSearchParams({ amount: $('cuAmt').value, from: $('cuFrom').value, to: $('cuTo').value });
-          out(o, await api('GET', '/v1/convert/currency?' + q));
+          const r = await api('GET', '/v1/convert/currency?' + q);
+          render(o, `
+            <div class="big">${fmt(r.amount)} ${esc(r.from)} ≈ ${fmt(r.result)} ${esc(r.to)}</div>
+            <div class="muted">Tasa: 1 ${esc(r.from)} = ${fmt(r.rate)} ${esc(r.to)} · actualizada: ${esc(r.ratesUpdatedAt)}</div>
+          `, r);
         },
         mock: async (o) => {
           const q = new URLSearchParams({ count: $('mkCount').value, locale: $('mkLocale').value });
-          out(o, await api('GET', '/v1/mock/users?' + q));
+          const r = await api('GET', '/v1/mock/users?' + q);
+          const rows = r.data.map((u) => `
+            <div class="row">
+              <img src="${esc(u.avatar)}" alt="" width="24" height="24" style="border-radius:9999px" />
+              <span><strong>${esc(u.fullName)}</strong> · <span class="mono">${esc(u.email)}</span> · <span class="muted">${esc(u.city)}, ${esc(u.country)}</span></span>
+            </div>`).join('');
+          render(o, `${rows}<div class="muted">Personas 100% ficticias generadas al azar.</div>`, r);
         },
         uuid: async (o) => {
-          out(o, await api('GET', '/v1/tools/uuid?count=' + $('uuidN').value));
+          const r = await api('GET', '/v1/tools/uuid?count=' + encodeURIComponent($('uuidN').value));
+          const rows = r.data.map((u) => `<div class="row"><span class="mono">${esc(u)}</span>${copyBtn(u)}</div>`).join('');
+          render(o, rows, r);
         },
         slug: async (o) => {
-          out(o, await api('POST', '/v1/tools/slugify', { body: { text: $('slugText').value } }));
+          const r = await api('POST', '/v1/tools/slugify', { body: { text: $('slugText').value } });
+          render(o, `<div class="row"><span class="big mono">${esc(r.slug)}</span>${copyBtn(r.slug)}</div>`, r);
         },
         card: async (o) => {
-          out(o, await api('POST', '/v1/validate/credit-card', { body: { number: $('ccNum').value } }));
+          const r = await api('POST', '/v1/validate/credit-card', { body: { number: $('ccNum').value } });
+          render(o, r.valid
+            ? `<div class="big">✅ Número bien escrito · Marca: ${esc(String(r.brand).toUpperCase())}</div><div class="muted">Solo valida el formato; no confirma fondos ni titularidad.</div>`
+            : `<div class="big err">❌ El número no es válido</div><div class="muted">Revisa que esté completo y sin errores de dedo.</div>`,
+            r);
         },
       };
 
@@ -337,8 +479,7 @@
           try {
             await actions[btn.dataset.act](o);
           } catch (e) {
-            o.style.display = 'block';
-            out(o, e.message, true);
+            renderError(o, e.message);
           } finally {
             btn.disabled = false;
           }
