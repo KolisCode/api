@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+# La API y los redirects de enlaces cortos no aportan al índice
+Disallow: /v1/
+Disallow: /r/
+
+Sitemap: https://api.kolisevm.online/sitemap.xml
