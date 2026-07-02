@@ -4,4 +4,4 @@ Allow: /
 Disallow: /v1/
 Disallow: /r/
 
-Sitemap: https://api.kolisevm.online/sitemap.xml
+Sitemap: https://api.koliscode.com/sitemap.xml

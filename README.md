@@ -4,7 +4,7 @@ Toolbox de utilidades con **doble público**: una landing/playground en `/` pens
 cualquier persona (sin jerga, sin registro) y una **API REST documentada** para
 desarrolladores. Módulo estrella: **enlaces cortos con analytics**.
 
-**En vivo:** https://api.kolisevm.online
+**En vivo:** https://api.koliscode.com
 
 **Stack:** NestJS 11 · Prisma 7 (driver adapter `pg`) · PostgreSQL 17 · OpenAPI + [Scalar](https://scalar.com) · Tailwind v4 compilado.
 
@@ -147,7 +147,7 @@ entorno limpio levanta un PostgreSQL, instala, hace **lint → build → migraci
 
 ## Deploy
 
-**En producción:** https://api.kolisevm.online (DigitalOcean · PM2 puerto 3007 · nginx + HTTPS · PostgreSQL).
+**En producción:** https://api.koliscode.com (DigitalOcean · PM2 puerto 3007 · nginx + HTTPS · PostgreSQL).
 
 Deploy con un comando (rsync + build remoto + reload PM2):
 
@@ -190,7 +190,7 @@ Notas de operación:
 - [x] Toolbox+: **conversiones** (monedas/unidades) y **generador de contraseñas**
 - [x] **Landing + playground** en `/` (key temporal, demo en vivo de todo el toolbox)
 - [x] **Tests e2e** (Jest + supertest) y **CI** (GitHub Actions: lint · build · e2e con Postgres)
-- [x] **Deploy** en producción → https://api.kolisevm.online (DigitalOcean · PM2 · nginx · HTTPS)
+- [x] **Deploy** en producción → https://api.koliscode.com (DigitalOcean · PM2 · nginx · HTTPS)
 - [x] **Landing amigable** para público no-dev + Tailwind v4 compilado (sin CDN)
 - [x] **Anti-abuso** en creación de keys (5/hora por IP) + healthcheck con auto-reinicio
 - [x] **SEO**: OG/Twitter cards, robots, sitemap, JSON-LD, Search Console + indexación

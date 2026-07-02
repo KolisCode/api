@@ -1,7 +1,7 @@
 # KolisKit API — contexto para Claude
 
 API de portafolio con doble público: landing/playground en `/` para público general y API REST
-para devs. **Producción: https://api.kolisevm.online** (droplet DO · PM2 `koliskit-api` :3007 ·
+para devs. **Producción: https://api.koliscode.com** (droplet DO · PM2 `koliskit-api` :3007 ·
 nginx + certbot · PostgreSQL local del droplet, DB `koliskit`). Repo: `KolisCode/api`.
 
 ## Stack y comandos

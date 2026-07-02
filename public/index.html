@@ -9,7 +9,7 @@
       content="Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href="https://api.kolisevm.online/" />
+    <link rel="canonical" href="https://api.koliscode.com/" />
     <meta name="theme-color" content="#020617" />
 
     <!-- Open Graph / redes sociales (WhatsApp, Facebook, LinkedIn) -->
@@ -18,14 +18,14 @@
     <meta property="og:site_name" content="KolisKit" />
     <meta property="og:title" content="KolisKit · Herramientas útiles en un clic" />
     <meta property="og:description" content="Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro." />
-    <meta property="og:url" content="https://api.kolisevm.online/" />
-    <meta property="og:image" content="https://api.kolisevm.online/og-image.png" />
+    <meta property="og:url" content="https://api.koliscode.com/" />
+    <meta property="og:image" content="https://api.koliscode.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="KolisKit · Herramientas útiles en un clic" />
     <meta name="twitter:description" content="Acorta enlaces, crea QR, genera contraseñas seguras y convierte monedas. Gratis, sin registro." />
-    <meta name="twitter:image" content="https://api.kolisevm.online/og-image.png" />
+    <meta name="twitter:image" content="https://api.koliscode.com/og-image.png" />
 
     <!-- Datos estructurados para Google (resultados enriquecidos) -->
     <script type="application/ld+json">
@@ -33,7 +33,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "KolisKit",
-        "url": "https://api.kolisevm.online/",
+        "url": "https://api.koliscode.com/",
         "description": "Acorta enlaces y mira sus visitas, crea códigos QR, genera contraseñas seguras, convierte monedas y unidades. Gratis, sin registro.",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Web",
@@ -107,7 +107,7 @@
           <p class="text-xs text-slate-400 mb-3">
             Genera la imagen QR de una página web o un texto, lista para imprimir o compartir.
           </p>
-          <input id="qrData" value="https://api.kolisevm.online" placeholder="Página web o texto" class="inp mb-2" />
+          <input id="qrData" value="https://api.koliscode.com" placeholder="Página web o texto" class="inp mb-2" />
           <div class="flex gap-2 items-center">
             <select id="qrFormat" class="inp w-40">
               <option value="png">Imagen (PNG)</option>
@@ -240,7 +240,7 @@
             <p class="text-slate-300 font-medium mb-1">Tu API key de esta sesión (plan FREE):</p>
             <p class="font-mono text-xs bg-slate-950 rounded-lg p-3 border border-emerald-500/30 text-emerald-300 break-all" id="devKey"></p>
           </div>
-          <pre class="font-mono text-xs bg-slate-950 rounded-lg p-3 border border-white/10 text-slate-300">curl -X POST https://api.kolisevm.online/v1/keys \
+          <pre class="font-mono text-xs bg-slate-950 rounded-lg p-3 border border-white/10 text-slate-300">curl -X POST https://api.koliscode.com/v1/keys \
   -H 'Content-Type: application/json' -d '{"name":"mi-app"}'
 # → { "key": "kk_live_…" }  · úsala como Authorization: Bearer &lt;key&gt;</pre>
         </div>
