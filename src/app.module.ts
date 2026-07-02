@@ -5,7 +5,10 @@ import { ThrottlerModule, seconds } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
 import { ApiKeyGuard } from './common/auth/api-key.guard';
-import { PlanThrottlerGuard } from './common/throttler/plan-throttler.guard';
+import {
+  PlanThrottlerGuard,
+  planLimitResolver,
+} from './common/throttler/plan-throttler.guard';
 import { KeysModule } from './modules/keys/keys.module';
 import { LinksModule } from './modules/links/links.module';
 import { QrModule } from './modules/qr/qr.module';
@@ -27,7 +30,13 @@ import { HealthModule } from './modules/health/health.module';
         redact: ['req.headers.authorization', 'req.headers["x-api-key"]'],
       },
     }),
-    ThrottlerModule.forRoot([{ ttl: seconds(60), limit: 30 }]),
+    ThrottlerModule.forRoot({
+      // El límite por defecto se resuelve por plan (FREE/PRO) o por IP anónima;
+      // las rutas con @Throttle() propio (p. ej. POST /v1/keys) lo sobreescriben.
+      throttlers: [{ ttl: seconds(60), limit: planLimitResolver }],
+      errorMessage:
+        'Demasiadas solicitudes. Espera un momento e intenta de nuevo.',
+    }),
     PrismaModule,
     KeysModule,
     LinksModule,

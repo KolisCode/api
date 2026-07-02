@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle, hours } from '@nestjs/throttler';
 import { CurrentKey } from '../../common/auth/current-key.decorator';
 import type { AuthenticatedKey } from '../../common/auth/authenticated-key';
 import { Public } from '../../common/auth/public.decorator';
@@ -13,6 +14,9 @@ export class KeysController {
 
   @Public()
   @Post()
+  // Anti-abuso: crear keys es lo único sin auth, así que se limita fuerte
+  // por IP (la landing crea una key por visitante y la reutiliza).
+  @Throttle({ default: { limit: 5, ttl: hours(1) } })
   @ApiOperation({
     summary: 'Crear una API key (demo)',
     description:
