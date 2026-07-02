@@ -1,10 +1,12 @@
 # KolisKit API
 
-Toolbox de utilidades para desarrolladores, construido como API de muestra para portafolio.
-Módulo estrella: **enlaces cortos con analytics**. Pensado para ampliarse con QR, generación de
-datos de prueba, validadores y más.
+Toolbox de utilidades con **doble público**: una landing/playground en `/` pensada para
+cualquier persona (sin jerga, sin registro) y una **API REST documentada** para
+desarrolladores. Módulo estrella: **enlaces cortos con analytics**.
 
-**Stack:** NestJS 11 · Prisma 7 (driver adapter `pg`) · PostgreSQL 17 · OpenAPI + [Scalar](https://scalar.com).
+**En vivo:** https://api.kolisevm.online
+
+**Stack:** NestJS 11 · Prisma 7 (driver adapter `pg`) · PostgreSQL 17 · OpenAPI + [Scalar](https://scalar.com) · Tailwind v4 compilado.
 
 ---
 
@@ -16,7 +18,13 @@ datos de prueba, validadores y más.
 - 🔳 **Generador de QR** (PNG/SVG, tamaño y colores configurables), con QR directo de cada enlace.
 - 🧰 **Toolbox**: datos fake reproducibles (seed/locale), UUID v4, slugify, validación de tarjetas (Luhn + marca) y generador de contraseñas (crypto + entropía).
 - 🔄 **Conversiones**: unidades (longitud, masa, volumen, área, velocidad, tiempo, datos, temperatura) y monedas con tasas en vivo (~160 divisas, cacheadas).
-- 🎮 **Landing + playground** en `/`: genera una API key temporal y prueba todos los módulos en vivo desde el navegador.
+- 🎮 **Landing + playground** en `/` apta para no-desarrolladores: el acceso (API key) se crea
+  solo al usar cualquier herramienta, resultados en lenguaje humano con botón *Copiar*,
+  selectores en español para unidades/monedas, y JSON técnico plegado por tarjeta.
+- 🛡️ **Anti-abuso**: crear API keys está limitado a 5/hora por IP (`@Throttle` por ruta sobre
+  un límite global dinámico por plan).
+- 🔎 **SEO/compartir**: metas Open Graph + Twitter Card con `og-image` real, JSON-LD
+  (`WebApplication`), `robots.txt`, `sitemap.xml` y verificación de Google Search Console.
 - 📖 **Docs interactivas** en `/reference` (Scalar) + spec en `/openapi.json`.
 - ⚠️ **Errores consistentes** con [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) (`application/problem+json`).
 - 🧱 Versionado por URI (`/v1`), validación estricta, logs estructurados (pino), health check.
@@ -88,7 +96,8 @@ curl http://localhost:3000/v1/links/nest/stats \
 | `GET`  | `/` | — | Landing + playground interactivo |
 | `GET`  | `/health` | — | Estado del servicio |
 
-**Rate limits:** `FREE` 30 req/min · `PRO` 120 req/min · anónimo 60 req/min (por IP).
+**Rate limits:** `FREE` 30 req/min · `PRO` 120 req/min · anónimo 60 req/min (por IP) ·
+`POST /v1/keys` **5/hora por IP** (anti-abuso; la landing reutiliza la key por visitante).
 
 ---
 
@@ -109,8 +118,15 @@ src/
     health/      health check
   prisma/        servicio Prisma (adapter pg) + módulo global
   generated/     cliente Prisma (no se versiona)
-public/          landing + playground (index.html autocontenido, servido en /)
+public/          estáticos servidos en / (fuera de los guards de Nest):
+  index.html       landing + playground (vanilla JS; estilos custom en @layer components)
+  styles.css       Tailwind v4 compilado (no se versiona; `npm run build:css`)
+  og-image.png     tarjeta 1200×630 para redes · robots.txt · sitemap.xml · favicon.svg
+tailwind.css     hoja fuente Tailwind (@source ./public + @theme brand)
 ```
+
+> **Gotcha CSS:** los estilos custom del HTML viven en `@layer components`; si se dejan sin
+> capa pisan a las utilidades de Tailwind v4 (unlayered > layered) y rompen `w-*`/`flex-1`.
 
 ---
 
@@ -150,6 +166,21 @@ npm run start:prod
 Variables requeridas: `DATABASE_URL`, `IP_HASH_SECRET`, `PUBLIC_BASE_URL`, `PORT`, `NODE_ENV=production`.
 También incluye `Dockerfile` multi-stage para contenedor.
 
+Notas de operación:
+- Tras `pm2 reload` (fork mode) hay una ventana de ~5 s en que nginx responde 502 — es el
+  arranque normal, no un fallo del deploy.
+- Un **healthcheck** en cron (cada 5 min, en el droplet) verifica `/health` y reinicia el
+  servicio vía PM2 si está caído.
+
+---
+
+## SEO / descubribilidad
+
+- Previews al compartir: metas OG/Twitter + `og-image.png` (1200×630).
+- `robots.txt` (excluye `/v1/` y `/r/`) + `sitemap.xml` + JSON-LD `WebApplication`.
+- Sitio verificado en **Google Search Console** (archivo `public/google*.html` — debe
+  permanecer en el repo) con sitemap enviado; primer crawl de Googlebot confirmado 2026-07-02.
+
 ---
 
 ## Roadmap
@@ -160,3 +191,11 @@ También incluye `Dockerfile` multi-stage para contenedor.
 - [x] **Landing + playground** en `/` (key temporal, demo en vivo de todo el toolbox)
 - [x] **Tests e2e** (Jest + supertest) y **CI** (GitHub Actions: lint · build · e2e con Postgres)
 - [x] **Deploy** en producción → https://api.kolisevm.online (DigitalOcean · PM2 · nginx · HTTPS)
+- [x] **Landing amigable** para público no-dev + Tailwind v4 compilado (sin CDN)
+- [x] **Anti-abuso** en creación de keys (5/hora por IP) + healthcheck con auto-reinicio
+- [x] **SEO**: OG/Twitter cards, robots, sitemap, JSON-LD, Search Console + indexación
+
+### Ideas futuras
+- [ ] Páginas dedicadas por herramienta (`/acortar-enlaces`, `/generar-qr`…) para SEO orgánico
+- [ ] Dominio propio (p. ej. `koliskit.com`) para marca
+- [ ] Dashboard del usuario (sus enlaces + stats) sobre la misma API key
