@@ -13,7 +13,9 @@ nginx + certbot · PostgreSQL local del droplet, DB `koliskit`). Repo: `KolisCod
 - Tests: `npm run test:e2e` (necesita la DB local arriba). Lint SIN `--fix` debe salir limpio
   (CI lo exige): `npx eslint "src/**/*.ts" "test/**/*.ts"`.
 - Deploy: `./deploy.sh` (rsync desde local → build en droplet → `pm2 reload`). **No** usa git
-  pull: el repo es privado y el droplet no tiene credenciales de GitHub.
+  pull: el repo es privado y el droplet no tiene credenciales de GitHub. ⚠️ Tampoco hace
+  `git push` (a diferencia del deploy.sh del portafolio) — pushear a `origin/main` a mano
+  tras deployar, o el remoto queda atrás (pasó: 14 commits de lag el 2026-07-02).
 
 ## Arquitectura (lo no obvio)
 
