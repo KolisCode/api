@@ -23,6 +23,9 @@ desarrolladores. Módulo estrella: **enlaces cortos con analytics**.
   selectores en español para unidades/monedas, y JSON técnico plegado por tarjeta.
 - 🛡️ **Anti-abuso**: crear API keys está limitado a 5/hora por IP (`@Throttle` por ruta sobre
   un límite global dinámico por plan).
+- 🔒 **Headers de seguridad** con Helmet (CSP desactivado a propósito: la landing usa JS
+  inline y `/reference` carga Scalar desde CDN) y **CORS por allowlist** (`CORS_ORIGINS`,
+  CSV; sin la variable cae a los dominios de koliscode.com).
 - 🔎 **SEO/compartir**: metas Open Graph + Twitter Card con `og-image` real, JSON-LD
   (`WebApplication`), `robots.txt`, `sitemap.xml` y verificación de Google Search Console.
 - 📖 **Docs interactivas** en `/reference` (Scalar) + spec en `/openapi.json`.
@@ -89,6 +92,12 @@ curl http://localhost:3000/v1/links/nest/stats \
 | `GET`  | `/v1/tools/uuid` | ✅ | Generar UUID v4 |
 | `POST` | `/v1/tools/slugify` | ✅ | Texto → slug URL-safe |
 | `GET`  | `/v1/tools/password` | ✅ | Generar contraseñas seguras (entropía + fuerza) |
+| `POST` | `/v1/tools/hash` | ✅ | Generar hash / HMAC (MD5, SHA-1, SHA-256, SHA-512) |
+| `POST` | `/v1/tools/base64` | ✅ | Codificar / decodificar texto en base64 (estándar o url-safe) |
+| `POST` | `/v1/tools/jwt/decode` | ✅ | Decodificar header + payload de un JWT (no verifica la firma) |
+| `GET`  | `/v1/tools/timestamp` | ✅ | Convertir timestamp/fecha entre formatos y timezones |
+| `GET`  | `/v1/tools/timestamp/timezones` | ✅ | Listar timezones IANA soportadas |
+| `GET`  | `/v1/tools/color` | ✅ | Convertir color (hex/rgb/hsl) + contraste WCAG |
 | `GET`  | `/v1/convert/units` | ✅ | Convertir unidades (8 categorías) |
 | `GET`  | `/v1/convert/currency` | ✅ | Convertir monedas (tasas en vivo) |
 | `POST` | `/v1/validate/credit-card` | ✅ | Validar tarjeta (Luhn) + marca |
@@ -194,6 +203,8 @@ Notas de operación:
 - [x] **Landing amigable** para público no-dev + Tailwind v4 compilado (sin CDN)
 - [x] **Anti-abuso** en creación de keys (5/hora por IP) + healthcheck con auto-reinicio
 - [x] **SEO**: OG/Twitter cards, robots, sitemap, JSON-LD, Search Console + indexación
+- [x] Toolbox++: **hash/HMAC**, **base64**, **decodificador JWT** (sin verificar firma),
+      **timestamp/timezones** y **conversor de color** (contraste WCAG)
 
 ### Ideas futuras
 - [ ] Páginas dedicadas por herramienta (`/acortar-enlaces`, `/generar-qr`…) para SEO orgánico

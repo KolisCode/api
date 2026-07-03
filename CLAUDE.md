@@ -26,6 +26,9 @@ nginx + certbot · PostgreSQL local del droplet, DB `koliskit`). Repo: `KolisCod
 - `public/` se sirve con `useStaticAssets` **fuera de los guards** (por eso la landing es
   pública). La landing crea su API key sola (localStorage + retry en 401).
 - Redirect público de enlaces: `GET /r/:code` (302, registra clic).
+- Las tools nuevas de `ToolsModule` (hash, encode, time, color) siguen el patrón
+  "un service + controller + DTO por tool", cada una con su unit spec en `src/` y su
+  e2e propio en `test/tools-*.e2e-spec.ts`.
 
 ## Gotchas que ya costaron tiempo
 
