@@ -11,6 +11,7 @@ import type {
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { configureApp } from './app-config';
+import { buildCorsOptions } from './common/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -22,7 +23,9 @@ async function bootstrap() {
   // Necesario para que req.ip sea correcto tras el proxy (nginx/Cloudflare).
   app.set('trust proxy', 1);
 
-  app.enableCors();
+  // Allowlist por env CORS_ORIGINS (ver src/common/cors.ts). Server-to-server
+  // (sin header Origin) no se ve afectado.
+  app.enableCors(buildCorsOptions(process.env));
 
   // Versionado, validación y formato de errores (compartido con los tests e2e).
   configureApp(app);

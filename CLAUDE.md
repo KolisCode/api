@@ -47,4 +47,7 @@ nginx + certbot · PostgreSQL local del droplet, DB `koliskit`). Repo: `KolisCod
 - Healthcheck: cron cada 5 min en el droplet (`/usr/local/bin/koliskit-api-healthcheck.sh`)
   → verifica `:3007/health` y reinicia por PM2 si cae. Log: `/var/log/koliskit-api-healthcheck.log`.
 - Secretos SOLO en el `.env` del droplet (`/var/www/koliskit-api/.env`, chmod 600).
+- CORS es allowlist por env `CORS_ORIGINS` (CSV; ver `src/common/cors.ts`). Si se añade un
+  frontend nuevo que consuma la API desde navegador, añadir su origen al `.env` del droplet
+  ANTES del `pm2 reload`. Sin la variable cae al default koliscode.com + api.koliscode.com.
 - SEO: sitemap enviado en Search Console; monitorear búsquedas en SC → Rendimiento.
