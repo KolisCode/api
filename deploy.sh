@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy de KolisKit API al droplet (https://api.kolisevm.online).
+# Deploy de KolisKit API al droplet (https://api.koliscode.com).
 # Sincroniza el código por rsync, compila en el servidor y recarga PM2.
 # El repo es privado y el droplet no tiene credenciales de GitHub, por eso
 # se despliega por rsync desde local (no por git pull).
@@ -32,4 +32,4 @@ ssh "$REMOTE_HOST" "
 log "[3/3] recargar PM2 ..."
 ssh "$REMOTE_HOST" "pm2 reload $PM2_NAME --update-env && pm2 save"
 
-log "Deploy OK → https://api.kolisevm.online"
+log "Deploy OK → https://api.koliscode.com"
