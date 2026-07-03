@@ -219,6 +219,84 @@
           <div data-out class="out"></div>
         </article>
 
+        <!-- Hash / HMAC -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🔎 Huella digital de un texto (hash)</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Calcula una "huella" única de un texto para comprobar que no fue alterado.
+            Si agregas una clave, calcula un HMAC (huella firmada con esa clave).
+          </p>
+          <textarea id="hsText" rows="3" placeholder="Escribe o pega el texto" class="inp mb-2">Hola mundo</textarea>
+          <div class="flex flex-wrap gap-3 text-xs mb-2">
+            <label><input type="checkbox" id="hsMd5" /> MD5</label>
+            <label><input type="checkbox" id="hsSha1" /> SHA-1</label>
+            <label><input type="checkbox" id="hsSha256" checked /> SHA-256</label>
+            <label><input type="checkbox" id="hsSha512" /> SHA-512</label>
+          </div>
+          <div class="flex gap-2 mb-2 items-center">
+            <input id="hsHmac" placeholder="Clave HMAC (opcional)" class="inp flex-1" />
+            <select id="hsEncoding" class="inp w-36">
+              <option value="hex">Hexadecimal</option>
+              <option value="base64">Base64</option>
+            </select>
+          </div>
+          <button data-act="hash" class="btn">Calcular</button>
+          <div data-out class="out"></div>
+        </article>
+
+        <!-- Base64 -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🔡 Codifica o decodifica Base64</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Base64 convierte un texto en letras y números para poder enviarlo donde solo se
+            aceptan caracteres simples (correos, enlaces, JSON…). No es un cifrado: cualquiera
+            puede revertirlo.
+          </p>
+          <textarea id="b64Text" rows="3" placeholder="Escribe el texto o pega el base64" class="inp mb-2">Hola mundo</textarea>
+          <div class="flex flex-wrap gap-3 items-center text-xs mb-2">
+            <select id="b64Action" class="inp w-48">
+              <option value="encode">Codificar (texto → base64)</option>
+              <option value="decode">Decodificar (base64 → texto)</option>
+            </select>
+            <label><input type="checkbox" id="b64UrlSafe" /> Apto para URLs</label>
+          </div>
+          <button data-act="base64" class="btn">Convertir</button>
+          <div data-out class="out"></div>
+        </article>
+
+        <!-- JWT -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🪪 Decodifica un JWT</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Muestra el contenido (header y payload) de un token JWT y si ya venció.
+            Solo lectura: no verifica la firma, así que esto no confirma que el token sea auténtico.
+          </p>
+          <textarea id="jwtToken" rows="3" placeholder="Pega aquí el token (eyJhbGciOi...)" class="inp mb-2"></textarea>
+          <button data-act="jwt" class="btn">Decodificar</button>
+          <div data-out class="out"></div>
+        </article>
+
+        <!-- Timestamp -->
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <h3 class="font-semibold text-white mb-1">🕒 Convierte fechas y timestamps</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Convierte un epoch (segundos o milisegundos) o una fecha entre formatos, y mira
+            cuánto falta o cuánto pasó desde ahora.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <input id="tsValue" value="now" placeholder="now, 1700003600 o 2024-01-15T10:00:00Z" class="inp flex-1" />
+            <select id="tsTz" class="inp w-48">
+              <option value="">Sin zona horaria</option>
+              <option value="America/Bogota">Bogotá / Lima / Quito</option>
+              <option value="America/Mexico_City">Ciudad de México</option>
+              <option value="Europe/Madrid">Madrid</option>
+              <option value="UTC">UTC</option>
+            </select>
+          </div>
+          <button data-act="timestamp" class="btn">Convertir</button>
+          <div data-out class="out"></div>
+        </article>
+
       </div>
     </main>
 
@@ -303,6 +381,7 @@
         ['CNY','Yuan chino'],['AUD','Dólar australiano'],
       ];
       const STRENGTH = { weak: 'Débil 😟', fair: 'Aceptable 🙂', strong: 'Fuerte 💪', 'very-strong': 'Muy fuerte 🔒' };
+      const HASH_ALGOS = [['md5', 'hsMd5'], ['sha1', 'hsSha1'], ['sha256', 'hsSha256'], ['sha512', 'hsSha512']];
 
       function fillUnitSelects() {
         const cat = $('unCat');
@@ -497,6 +576,50 @@
             ? `<div class="big">✅ Número bien escrito · Marca: ${esc(String(r.brand).toUpperCase())}</div><div class="muted">Solo valida el formato; no confirma fondos ni titularidad.</div>`
             : `<div class="big err">❌ El número no es válido</div><div class="muted">Revisa que esté completo y sin errores de dedo.</div>`,
             r);
+        },
+        hash: async (o) => {
+          const algorithms = HASH_ALGOS.filter(([, id]) => $(id).checked).map(([a]) => a);
+          if (!algorithms.length) throw new Error('Marca al menos un algoritmo (por ejemplo SHA-256).');
+          const body = { text: $('hsText').value, algorithms, encoding: $('hsEncoding').value };
+          const hmacKey = $('hsHmac').value.trim();
+          if (hmacKey) body.hmacKey = hmacKey;
+          const r = await api('POST', '/v1/tools/hash', { body });
+          const rows = Object.entries(r.digests)
+            .map(([alg, val]) => `<div class="row"><span class="muted" style="width:4.5rem">${alg.toUpperCase()}</span><span class="mono">${esc(val)}</span>${copyBtn(val)}</div>`)
+            .join('');
+          render(o, `${rows}<div class="muted">${r.input.hmac ? 'HMAC' : 'Hash'} sobre ${r.input.length} caracter${r.input.length === 1 ? '' : 'es'}.</div>`, r);
+        },
+        base64: async (o) => {
+          const body = { text: $('b64Text').value, action: $('b64Action').value, urlSafe: $('b64UrlSafe').checked };
+          const r = await api('POST', '/v1/tools/base64', { body });
+          render(o, `<div class="row"><span class="mono">${esc(r.result)}</span>${copyBtn(r.result)}</div>`, r);
+        },
+        jwt: async (o) => {
+          const r = await api('POST', '/v1/tools/jwt/decode', { body: { token: $('jwtToken').value.trim() } });
+          const badge = r.isExpired === null
+            ? ''
+            : r.isExpired
+              ? '<span class="err">⛔ Expirado</span>'
+              : '<span style="color:#34d399">✅ Vigente</span>';
+          render(o, `
+            ${badge ? `<div class="row">${badge}${r.expiresAt ? `<span class="muted">· vence: ${esc(r.expiresAt)}</span>` : ''}</div>` : ''}
+            <div class="muted">Header</div>
+            <pre class="mono">${esc(JSON.stringify(r.header, null, 2))}</pre>
+            <div class="muted">Payload</div>
+            <pre class="mono">${esc(JSON.stringify(r.payload, null, 2))}</pre>
+          `, r);
+        },
+        timestamp: async (o) => {
+          const q = new URLSearchParams({ value: $('tsValue').value.trim() || 'now' });
+          const tz = $('tsTz').value;
+          if (tz) q.set('tz', tz);
+          const r = await api('GET', '/v1/tools/timestamp?' + q);
+          render(o, `
+            <div class="big">${esc(r.relative)}</div>
+            <div class="muted">ISO: <span class="mono">${esc(r.iso)}</span></div>
+            ${r.local ? `<div class="muted">Hora local: <span class="mono">${esc(r.local)}</span></div>` : ''}
+            <div class="muted">Epoch: ${fmt(r.epochSeconds)} s / ${fmt(r.epochMs)} ms · ${esc(r.dayOfWeek)}</div>
+          `, r);
         },
       };
 
