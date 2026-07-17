@@ -141,12 +141,18 @@ tailwind.css     hoja fuente Tailwind (@source ./public + @theme brand)
 
 ## Tests y CI
 
-Tests **e2e** con Jest + supertest sobre la app real (requiere Postgres en marcha):
+Tests **unit** con Jest (108 specs en `src/`, corren sin DB):
+
+```bash
+npm run test            # 108 tests: toolbox, conversiones, tools (hash/encode/time/color), cors
+```
+
+Tests **e2e** con Jest + supertest sobre la app real (solo estos requieren Postgres en marcha):
 
 ```bash
 npm run db:up           # Postgres en Docker (puerto 5434)
 npm run prisma:migrate  # aplica migraciones
-npm run test:e2e        # 20 tests: keys, links+redirect, toolbox, conversiones
+npm run test:e2e        # 48 tests: keys, links+redirect, toolbox, conversiones, tools-*
 ```
 
 Cada push y PR dispara **GitHub Actions** (`.github/workflows/ci.yml`), que en un
